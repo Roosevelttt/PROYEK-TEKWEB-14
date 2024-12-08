@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2024 at 11:36 AM
+-- Generation Time: Dec 06, 2024 at 12:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,15 @@ CREATE TABLE `absensi` (
   `jam` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `absensi`
+--
+
+INSERT INTO `absensi` (`id_absensi`, `id_karyawan`, `jam`, `status`) VALUES
+(1, 1, '2022-01-01 01:00:00', 1),
+(2, 2, '2023-03-01 01:15:00', 1),
+(3, 3, '2020-05-15 01:30:00', 1);
 
 -- --------------------------------------------------------
 
@@ -85,13 +94,26 @@ CREATE TABLE `detail_transaksi` (
 
 CREATE TABLE `karyawan` (
   `id_karyawan` int(50) NOT NULL,
-  `kode_karyawan` int(50) NOT NULL,
+  `kode_karyawan` varchar(50) DEFAULT NULL,
   `nama` varchar(255) NOT NULL,
-  `nomor_telepon` int(30) NOT NULL,
-  `start_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `nomor_telepon` varchar(30) DEFAULT NULL,
+  `start_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `jabatan` varchar(50) NOT NULL,
-  `gaji` int(255) NOT NULL
+  `gaji` int(255) NOT NULL,
+  `periode_terakhir` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `karyawan`
+--
+
+INSERT INTO karyawan (id_karyawan, kode_karyawan, nama, nomor_telepon, start_date, jabatan, gaji)
+VALUES
+(1, 'K001', 'John Doe', '081234567890', '2020-01-15', 'kasir', 7500000.00),
+(2, 'K002', 'Jane Smith', '082345678901', '2019-03-22', 'penjaga gudang', 6500000.00),
+(3, 'K003', 'Alice Johnson', '083456789012', '2021-05-10', 'kasir', 5000000.00),
+(4, 'K004', 'Bob Brown', '084567890123', '2022-07-05', 'penjaga gudang', 4500000.00),
+(5, 'P001', 'Charlie White', '085678901234', '2015-08-12', 'pemilik', 0);
 
 -- --------------------------------------------------------
 
@@ -102,7 +124,7 @@ CREATE TABLE `karyawan` (
 CREATE TABLE `pelanggan` (
   `id_pelanggan` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `nomor_telepon` int(10) DEFAULT NULL,
+  `nomor_telepon` varchar(20) DEFAULT NULL,
   `alamat` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -238,7 +260,7 @@ ALTER TABLE `ukuran`
 -- AUTO_INCREMENT for table `absensi`
 --
 ALTER TABLE `absensi`
-  MODIFY `id_absensi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_absensi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=315;
 
 --
 -- AUTO_INCREMENT for table `detail_laporan`
@@ -262,7 +284,7 @@ ALTER TABLE `detail_transaksi`
 -- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id_karyawan` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_karyawan` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `pelanggan`
