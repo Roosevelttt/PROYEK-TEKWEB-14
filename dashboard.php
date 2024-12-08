@@ -15,6 +15,10 @@
           margin: 0;
           display: flex;
           flex-direction: column;
+          background-image: url('assets/background.jpeg');
+          background-size: cover;
+          background-position:center;
+          height:full;
         }
 
         main {
@@ -22,15 +26,20 @@
         }
 
         footer {
-          background-color: #332D2D;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
           color: white;
+          z-index: 2;
+          height:15vh;
+          padding: 2vh;
+          font-weight: 200;
+          font-size: smaller;
         }
 
         .navbar {
           width: 100%;
           margin: 0;
-          padding: 0;
-          background-color: #343a40; 
+          padding: 2vh 1vw;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); 
         }
 
         .navbar .container-fluid {
@@ -51,6 +60,7 @@
 
         .navbar-nav .nav-item {
           list-style: none;
+          padding: 0 0.5vw;
         }
 
         .navbar-nav .nav-item .nav-link {
@@ -68,13 +78,15 @@
         }
 
         .navbar-nav .nav-item1 .nav-link:hover {
-          background-color: #ff0000;
-          border-radius: 5px;
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
         .navbar-nav .nav-item .nav-link:hover {
-          background-color: #007bff;
-          border-radius: 5px;
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
         .dropdown-menu {
@@ -105,13 +117,74 @@
         .dropdown-item:hover {
           background-color: #f8f9fa;
         }
+
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          text-align: center;
+          transform: translateY(10%);
+        }
+
+        .sphere {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+        .sphere-small {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+        }
+
+        .text-behind {
+          position: absolute;
+          font-size: 10vw;
+          color: #fff;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(100%); /* Change to white */
+        }
+        
   </style>
 </head>
 <body>
   <!-- Navbar dan konten lainnya -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <nav class="navbar navbar-expand-md sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand"href="dashboard.php">  <img src="\img\logomuse.jpg" style="height: 50px; width: auto;"> MUSE COLLECTION</a>
+        <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -157,17 +230,28 @@
     </div>
 </nav>
 
-  <main>
-    <div class="text-center">
-      <h1>MAIN PAGE</h1>
-    </div>
-  </main>
+  <div class="center-content">
+    <div class="text-behind">Hartono</div>
+    <div class="text-behind">Collections</div>
+    <div class="sphere"></div>
+  </div>
 
   <footer class="text-center py-3">
     <div class="container">
-      <p class="mb-0">&copy; <?php echo date("Y"); ?> MUSE COLLECTION. All rights reserved.</p>
-      <p class="mb-0">Email: info@musecollection.com | Phone: (123) 456-7890</p>
+      <p class="mb-0">&copy; <?php echo date("Y"); ?> HARTONO COLLECTION. All rights reserved.</p>
+      <p class="mb-0">Email: info@hartonocollection.com | Phone: (123) 456-7890</p>
     </div>
   </footer>
+
+  <script>
+    function toggleMenu() {
+        const navMenu = document.querySelector('.navbar-collapse');
+        const hamburger = document.querySelector('.hamburger');
+        const isHidden = navMenu.style.display === 'none' || navMenu.style.display === '';
+
+        navMenu.style.display = isHidden ? 'block' : 'none'; // Show or hide the menu
+        hamburger.classList.toggle('active'); // Animate the hamburger
+    }
+  </script>
 </body>
 </html>

@@ -109,16 +109,18 @@ $resultUkuran = $conn->query($sqlUkuran);
             padding: 0 ;
         }
         .container {
-            background-color: white;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             align-items: center; /* Memusatkan secara horizontal */
             justify-content: center; /* Memusatkan secara vertikal */
             text-align: center; /* Menyelaraskan teks ke tengah */
-            max-width: 1200px;
             margin: 20px auto;
         }
 
@@ -154,9 +156,10 @@ $resultUkuran = $conn->query($sqlUkuran);
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            transform: translateY(-5vh);
         }
         .btn:hover {
-            background-color: #0056b3;
+            background-color: radial-gradient(circle, #ffff00, #E1AD15);;
         }
         .modal {
         display: none; /* Sembunyikan modal secara default */
@@ -198,105 +201,183 @@ $resultUkuran = $conn->query($sqlUkuran);
         flex: 1; /* Tombol mengambil ruang yang sama */
         margin: 0 5px; /* Jarak antar tombol */
     }
-     /* Navbar */
-     .navbar {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #343a40;
+    html, body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          background-image: url('assets/background.jpeg');
+          background-size: cover;
+          background-position:center;
+          height:full;
+        }
+
+        main {
+          flex: 1;
+        }
+
+        footer {
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+          color: white;
+          z-index: 2;
+          height:15vh;
+          padding: 2vh;
+          font-weight: 200;
+          font-size: smaller;
+        }
+
+        .navbar {
+          width: 100%;
+          margin: 0;
+          padding: 2vh 1vw;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); 
         }
 
         .navbar .container-fluid {
-            max-width: 100%;
-            padding: 0;
+          max-width: 100%;
+          padding: 0;
         }
 
         .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
+          color: white;
+          font-size: 1.5rem;
         }
 
         .navbar-nav {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
         }
 
         .navbar-nav .nav-item {
-            list-style: none;
+          list-style: none;
+          padding: 0 0.5vw;
         }
 
         .navbar-nav .nav-item .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
+        .navbar-nav .nav-item1 .nav-link {
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
+        .navbar-nav .nav-item1 .nav-link:hover {
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
         .navbar-nav .nav-item .nav-link:hover {
-            background-color: #007bff;
-            border-radius: 5px;
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
-        /* Dropdown */
         .dropdown-menu {
-            left: 0;
-            right: auto;
+          left: 0;
+          right: auto;
         }
 
         .dropdown-submenu {
-            position: relative;
+          position: relative;
         }
 
         .dropdown-submenu .dropdown-menu {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
+          display: none;
+          position: absolute;
+          left: 100%;
+          top: 0;
         }
 
         .dropdown-submenu:hover .dropdown-menu {
-            display: block;
+          display: block;
         }
 
         .dropdown-item {
-            color: #333;
-            padding: 10px 20px;
+          color: #333;
+          padding: 10px 20px;
         }
 
         .dropdown-item:hover {
-            background-color: #f8f9fa;
-        }  footer {
-            background-color: #332D2D; /* Warna latar belakang footer */
-            color: white; /* Warna teks footer */
-            margin-top: auto; /* Membuat footer menempel di bawah */
-            padding: 20px 0;
-            width: 100%;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        .navbar-nav .nav-item1 .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
-        }
-        .navbar-nav .nav-item1 .nav-link:hover {
-                    background-color: #ff0000;
-                    border-radius: 5px;
+          background-color: #f8f9fa;
         }
 
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding:3vh;
+          height: 30vh;
+          text-align: center;
+          transform: translateY(10%);
+        }
 
+        .sphere {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+        .sphere-small {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+        }
+
+        .text-behind {
+          position: absolute;
+          font-size: 5vw;
+          color: #fff;
+          margin: 3vh;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(100%); /* Change to white */
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand"href="dashboard.php">  <img src="\img\logomuse.jpg" style="height: 50px; width: auto;"> MUSE COLLECTION</a>
+    <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -342,7 +423,11 @@ $resultUkuran = $conn->query($sqlUkuran);
     </div>
 </nav> 
 <div class="container">
-    <h1>Daftar Produk</h1>
+    <div class="center-content">
+        <div class="text-behind">Daftar</div>
+        <div class="text-behind">Produk</div>
+        <div class="sphere"></div>
+    </div>
     
     <!-- Tombol untuk menambah produk -->
     <button class="btn" id="addProductBtn">Tambah Produk</button>
@@ -371,7 +456,7 @@ $resultUkuran = $conn->query($sqlUkuran);
 </table>
 
     <?php else: ?>
-        <p>Tidak ada produk yang tersedia.</p>
+        <p class="no-item">Tidak ada produk yang tersedia.</p>
     <?php endif; ?>
 </div>
 
