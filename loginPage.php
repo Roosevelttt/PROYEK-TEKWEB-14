@@ -15,15 +15,26 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-image: url('assets/background.jpeg');
+            background-size: cover;
+            background-position:center;
+            color:#f8f9fa !important;
         }
-
+    
+        label {
+            color:#f8f9fa !important;
+            margin-bottom: 0.5vw;
+        }
         .login-container {
-            background-color: #fff;
-            padding: 40px; 
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px; 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         .login-container h2 {
@@ -55,17 +66,23 @@
 
         button[type="submit"] {
             width: 100%;
-            background-color: #007bff;
-            color: #fff;
+            color: #000;
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            border-radius: 50px;
             padding: 12px;
             border: none;
-            border-radius: 5px;
             font-size: 18px; 
             cursor: pointer;
+            font-weight: bold;
         }
 
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
 
         .notification {
@@ -86,17 +103,66 @@
             color: #aaa;
         }
 
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding:3vh;
+          height: 30vh;
+          text-align: center;
+          transform: translateY(10%);
+        }
+
+        .sphere {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+
+        .text-behind {
+          position: absolute;
+          font-size: 3vw;
+          color: #fff;
+          margin: 3vh;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Login Karyawan</h2>
+    <div class="center-content">
+        <div class="text-behind">Hartono</div>
+        <div class="text-behind">Collections</div>
+        <div class="sphere"></div>
+    </div>
         <form id="login-form">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-5">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
