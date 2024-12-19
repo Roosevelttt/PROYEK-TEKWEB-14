@@ -17,39 +17,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $kode_barang = $_POST['kode_barang'];
     $harga = $_POST['harga'];
     $jumlah = $_POST['jumlah'];
-    $id_ukuran = $_POST['id_ukuran'];  // Ambil id_ukuran dari form
+    $id_ukuran = $_POST['id_ukuran'];
 
-    // Cek jika harga dan jumlah tidak valid (0 atau negatif)
-    if ($harga <= 0 || $jumlah <= 0) {
+    // Validasi input
+    if ($harga < 1000) {
         $error = true;
-        $error_message = "Harga dan Jumlah harus lebih besar dari 0.";
+        $error_message = "Harga harus lebih dari 1000.";
+    } elseif ($harga % 100 !== 0) {
+        $error = true;
+        $error_message = "Harga harus dalam kelipatan 100.";
+    } elseif ($jumlah <= 0) {
+        $error = true;
+        $error_message = "Jumlah harus lebih besar dari 0.";
     } else {
-        // Cek apakah kode barang sudah ada di database
-        $sqlCheckKode = "SELECT * FROM produk WHERE kode_barang = '$kode_barang'";
-        $resultCheckKode = $conn->query($sqlCheckKode);
+        // Periksa apakah kode barang sudah ada
+        $sqlCheckKode = "SELECT * FROM produk WHERE kode_barang = ?";
+        $stmt = $conn->prepare($sqlCheckKode);
+        $stmt->bind_param("s", $kode_barang);
+        $stmt->execute();
+        $resultCheckKode = $stmt->get_result();
 
         if ($resultCheckKode->num_rows > 0) {
-            // Jika kode barang sudah ada
             $error = true;
-            $error_message = "Kode barang sudah terdaftar. Silakan masukkan kode barang yang lain.";
+            $error_message = "Kode barang sudah terdaftar. Silakan gunakan kode barang lain.";
         } else {
-            // Query untuk menambah produk baru
-            $sql = "INSERT INTO produk (kode_barang, harga) VALUES ('$kode_barang', '$harga')";
-            
-            if ($conn->query($sql) === TRUE) {
-                // Ambil id_barang dari produk yang baru ditambahkan
-                $id_barang = $conn->insert_id;
-                
-                // Menambahkan stok ke detail_produk dengan id_ukuran
-                $sqlDetail = "INSERT INTO detail_produk (id_barang, stok_gudang, id_ukuran) VALUES ('$id_barang', '$jumlah', '$id_ukuran')";
-                if ($conn->query($sqlDetail) === TRUE) {
-                    // Menambahkan data ke detail_laporan
-                    $tanggal = date('Y-m-d');  // Tanggal saat ini
+            // Tambah produk baru
+            $sqlInsertProduk = "INSERT INTO produk (kode_barang, harga) VALUES (?, ?)";
+            $stmt = $conn->prepare($sqlInsertProduk);
+            $stmt->bind_param("si", $kode_barang, $harga);
+
+            if ($stmt->execute()) {
+                $id_barang = $stmt->insert_id; // ID produk baru
+
+                // Tambah stok ke detail_produk
+                $sqlInsertDetail = "INSERT INTO detail_produk (id_barang, stok_gudang, id_ukuran) VALUES (?, ?, ?)";
+                $stmtDetail = $conn->prepare($sqlInsertDetail);
+                $stmtDetail->bind_param("iii", $id_barang, $jumlah, $id_ukuran);
+
+                if ($stmtDetail->execute()) {
+                    // Tambah data ke detail_laporan
+                    $id_detprod = $conn->insert_id; // ID detail produk baru
+                    $tanggal = date('Y-m-d');
                     $status_in_out = "In";
-                    $sqlLaporan = "INSERT INTO detail_laporan (id_detprod, quantity, tanggal_in_out, status_in_out) 
-                                   VALUES ('$id_barang', '$jumlah', '$tanggal', '$status_in_out')";
-                    if ($conn->query($sqlLaporan) === TRUE) {
-                        $success = true; // Tanda bahwa produk berhasil ditambahkan
+
+                    $sqlInsertLaporan = "INSERT INTO detail_laporan (id_detprod, quantity, tanggal_in_out, status_in_out) VALUES (?, ?, ?, ?)";
+                    $stmtLaporan = $conn->prepare($sqlInsertLaporan);
+                    $stmtLaporan->bind_param("iiss", $id_detprod, $jumlah, $tanggal, $status_in_out);
+
+                    if ($stmtLaporan->execute()) {
+                        $success = true;
                     } else {
                         $error = true;
                         $error_message = "Gagal menambahkan data ke laporan.";
@@ -66,12 +82,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     }
 }
 
+// Proses Hapus Produk
+if (isset($_GET['action']) && $_GET['action'] === 'delete') {
+    $id_barang = (int)$_GET['id_barang'];
+
+    // Hapus dari detail_produk
+    $sqlDeleteDetail = "DELETE FROM detail_produk WHERE id_barang = $id_barang";
+    $conn->query($sqlDeleteDetail);
+
+    // Hapus dari produk
+    $sqlDeleteProduk = "DELETE FROM produk WHERE id_barang = $id_barang";
+    if ($conn->query($sqlDeleteProduk) === TRUE) {
+        $successDelete = true;
+    } else {
+        $errorDelete = true;
+        $error_message = "Gagal menghapus produk.";
+    }
+}
+
+// Proses Update Produk
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
+    $id_barang = (int)$_POST['id_barang'];
+    $harga = (int)$_POST['harga'];
+    $stok_gudang = (int)$_POST['stok_gudang'];
+    $id_ukuran = (int)$_POST['id_ukuran'];
+
+    if ($harga < 1000) {
+        $errorEdit = true;
+        $error_message = "Harga harus lebih dari 1000.";
+    } elseif ($harga % 100 !== 0) {
+        $errorEdit = true;
+        $error_message = "Harga harus dalam kelipatan 100 (contoh: 1200, 1500).";
+    } elseif ($stok_gudang <= 0) {
+        $errorEdit = true;
+        $error_message = "Jumlah harus lebih besar dari 0.";
+    } else {
+        // Update produk
+        $sqlUpdateProduk = "UPDATE produk SET harga = '$harga' WHERE id_barang = $id_barang";
+        if ($conn->query($sqlUpdateProduk) === TRUE) {
+            // Update detail_produk
+            $sqlUpdateDetail = "UPDATE detail_produk SET stok_gudang = '$stok_gudang', id_ukuran = '$id_ukuran' WHERE id_barang = $id_barang";
+            if ($conn->query($sqlUpdateDetail) === TRUE) {
+                // Update detail_laporan
+                $tanggal = date('Y-m-d'); // Tanggal saat ini
+                $status_in_out = "In"; // Status untuk pembaruan
+                $sqlUpdateLaporan = "UPDATE detail_laporan 
+                                     SET quantity = '$stok_gudang', tanggal_in_out = '$tanggal', status_in_out = '$status_in_out' 
+                                     WHERE id_detprod = $id_barang";
+                if ($conn->query($sqlUpdateLaporan) === TRUE) {
+                    $successEdit = true;
+                } else {
+                    $errorEdit = true;
+                    $error_message = "Gagal mengupdate detail laporan.";
+                }
+            } else {
+                $errorEdit = true;
+                $error_message = "Gagal mengupdate detail produk.";
+            }
+        } else {
+            $errorEdit = true;
+            $error_message = "Gagal mengupdate produk.";
+        }
+    }
+}
+
+// Ambil ukuran untuk pilihan edit
+$sqlUkuran = "SELECT * FROM ukuran";
+$resultUkuran = $conn->query($sqlUkuran);
+
+// Search
+$searchTerm = '';
+$whereClause = '';
+if (isset($_GET['search']) && $_GET['search'] !== '') {
+    $searchTerm = $conn->real_escape_string($_GET['search']);
+    // Pencarian pada kode_barang, ukuran, stok_gudang, dan harga
+    $whereClause = "WHERE p.kode_barang LIKE '%$searchTerm%'
+                    OR u.ukuran LIKE '%$searchTerm%'
+                    OR dp.stok_gudang LIKE '%$searchTerm%'
+                    OR p.harga LIKE '%$searchTerm%'";
+}
 
 // Query untuk menampilkan daftar produk
 $sqlProduk = "SELECT
+                p.id_barang,
                 p.kode_barang,
                 p.harga,
                 dp.stok_gudang,
+                u.id_ukuran,
                 u.ukuran
             FROM 
                 produk p
@@ -79,14 +176,11 @@ $sqlProduk = "SELECT
                 detail_produk dp ON p.id_barang = dp.id_barang
             JOIN 
                 ukuran u ON dp.id_ukuran = u.id_ukuran
+            $whereClause
             ORDER BY 
                 p.kode_barang ASC";
 
 $resultProduk = $conn->query($sqlProduk);
-
-// Query untuk mendapatkan ukuran yang tersedia
-$sqlUkuran = "SELECT * FROM ukuran";
-$resultUkuran = $conn->query($sqlUkuran);
 ?>
 
 <!DOCTYPE html>
@@ -138,9 +232,6 @@ $resultUkuran = $conn->query($sqlUkuran);
             margin-bottom: 10px;
         }
 
-        .btn {
-            margin-top: 20px; /* Memberikan jarak antara tombol dan elemen sebelumnya */
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -170,7 +261,6 @@ $resultUkuran = $conn->query($sqlUkuran);
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-            transform: translateY(-5vh);
         }
         .btn:hover {
             background-color: radial-gradient(circle, #ffff00, #E1AD15);;
@@ -433,6 +523,15 @@ $resultUkuran = $conn->query($sqlUkuran);
         <div class="text-behind">Produk</div>
         <div class="sphere"></div>
     </div>
+
+    
+<!-- Search Form -->
+<div class="search-container text-center">
+    <form id="form-search" method="GET" action="">
+        <input type="text" name="search" placeholder="Cari kode, ukuran, stok, harga" value="<?= isset($searchTerm) ? htmlspecialchars($searchTerm) : '' ?>">
+        <button type="submit" class="btn submit-btn">Search</button>
+    </form>
+</div>
     
     <!-- Tombol untuk menambah produk -->
     <button class="btn" id="addProductBtn">Tambah Produk</button>
@@ -448,6 +547,7 @@ $resultUkuran = $conn->query($sqlUkuran);
             <th id="sortUkuran">Ukuran</th>
             <th id="sortStok">Stok Gudang</th>
             <th id="sortHarga">Harga</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -457,6 +557,10 @@ $resultUkuran = $conn->query($sqlUkuran);
                 <td><?= $row['ukuran'] ?></td>
                 <td><?= $row['stok_gudang'] ?></td>
                 <td><?= number_format($row['harga'], 0, ',', '.') ?></td>
+                <td>
+                    <button class="btn btn-warning btn-sm btn-edit" onclick="openEditModal(<?= $row['id_barang'] ?>, <?= $row['harga'] ?>, <?= $row['stok_gudang'] ?>, <?= $row['id_ukuran'] ?>)">Edit</button>
+                    <a href="?action=delete&id_barang=<?= $row['id_barang'] ?>" class="btn btn-danger btn-sm btn-delete" id="delete-btn-<?= $row['id_barang'] ?>">Delete</a>
+                </td>
             </tr>
         <?php endwhile; ?>
     </tbody>
@@ -496,6 +600,33 @@ $resultUkuran = $conn->query($sqlUkuran);
     </div>
 </div>
 
+<!-- Modal Edit -->
+<div class="modal" id="editModal">
+    <div class="modal-content">
+        <h3>Edit Produk</h3>
+        <form method="POST" action="">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="id_barang" id="edit_id_barang">
+            <label>Harga:</label>
+            <input type="number" name="harga" id="edit_harga" required>
+            <label>Stok Gudang:</label>
+            <input type="number" name="stok_gudang" id="edit_stok_gudang" required min="0">
+            <label>Ukuran:</label>
+            <select name="id_ukuran" id="edit_id_ukuran" required>
+                <?php 
+                $resultUkuran->data_seek(0); // Reset pointer ukuran
+                while ($u = $resultUkuran->fetch_assoc()): ?>
+                    <option value="<?= $u['id_ukuran'] ?>"><?= $u['ukuran'] ?></option>
+                <?php endwhile; ?>
+            </select>
+            <div class="modal-buttons">
+                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Batal</button>
+                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     // Menangani tombol "Tambah Produk"
     document.getElementById('addProductBtn').addEventListener('click', function() {
@@ -516,8 +647,8 @@ $resultUkuran = $conn->query($sqlUkuran);
         ukuran: true
     };
 
-    // Definisikan urutan untuk ukuran (Small, Medium, Large, XXL, dsb.)
-    const ukuranOrder = ['Small', 'Medium', 'Large', 'X-Large', 'XX-Large'];
+    // Definisikan urutan untuk ukuran (Small, Medium, Large)
+    const ukuranOrder = ['S', 'M', 'L'];
 
     // Mengambil elemen header yang bisa disortir
     const headers = document.querySelectorAll('table th');
@@ -587,6 +718,33 @@ $resultUkuran = $conn->query($sqlUkuran);
             text: '<?= isset($error_message) ? $error_message : "Terjadi kesalahan." ?>',
         });
     <?php endif; ?>
+
+    <?php if (isset($successDelete) && $successDelete === true): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Produk Berhasil Dihapus',
+        });
+    <?php elseif (isset($errorDelete) && $errorDelete === true): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '<?= isset($error_message) ? $error_message : "Terjadi kesalahan." ?>',
+        });
+    <?php endif; ?>
+
+    <?php if (isset($successEdit) && $successEdit === true): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Produk Berhasil Diupdate',
+        });
+    <?php elseif (isset($errorEdit) && $errorEdit === true): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '<?= isset($error_message) ? $error_message : "Terjadi kesalahan." ?>',
+        });
+    <?php endif; ?>
+
     document.querySelector('form').onsubmit = function(e) {
         let harga = document.getElementById('harga').value;
         if (harga < 1000) {
@@ -606,6 +764,46 @@ $resultUkuran = $conn->query($sqlUkuran);
             });
         }
     };
+
+    document.querySelectorAll('.btn-delete').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); // Mencegah default action (navigasi)
+
+            const deleteUrl = this.href; // Ambil URL dari atribut href
+            const id_barang = this.id.split('-')[2]; // Ambil ID barang dari tombol yang diklik
+
+            // Gunakan SweetAlert untuk konfirmasi
+            Swal.fire({
+                title: 'Yakin ingin menghapus produk ini?',
+                text: 'Data yang sudah dihapus tidak bisa dikembalikan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika user mengonfirmasi, lanjutkan ke URL untuk menghapus
+                    window.location.href = deleteUrl;
+            }
+            });
+        });
+    });
+
+function openEditModal(id_barang, harga, stok_gudang, id_ukuran) {
+    document.getElementById('edit_id_barang').value = id_barang;
+    document.getElementById('edit_harga').value = harga;
+    document.getElementById('edit_stok_gudang').value = stok_gudang;
+    document.getElementById('edit_id_ukuran').value = id_ukuran;
+
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+document.getElementById('form-search').onsubmit = function(e) {
+};
 </script>
 </body>
 </html>
