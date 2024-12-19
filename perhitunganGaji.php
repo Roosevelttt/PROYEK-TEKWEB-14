@@ -235,16 +235,6 @@ body {
           flex: 1;
         }
 
-        footer {
-          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-          color: white;
-          z-index: 2;
-          height:15vh;
-          padding: 2vh;
-          font-weight: 200;
-          font-size: smaller;
-        }
-
         .navbar {
           width: 100%;
           margin: 0;
@@ -507,12 +497,6 @@ body {
 <!-- Tampilkan Notifikasi -->
 <?php echo $alert; ?>
 
-<footer class="footer">
-    <div class="container">
-        <p class="mb-0">&copy; <?php echo date("Y"); ?> MUSE COLLECTION. All rights reserved.</p>
-        <p class="mb-0">Email: info@musecollection.com | Phone: (123) 456-7890</p>
-    </div>
-</footer>
 
 </body>
 </html>

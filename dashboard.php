@@ -25,16 +25,6 @@
           flex: 1;
         }
 
-        footer {
-          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-          color: white;
-          z-index: 2;
-          height:15vh;
-          padding: 2vh;
-          font-weight: 200;
-          font-size: smaller;
-        }
-
         .navbar {
           width: 100%;
           margin: 0;
@@ -235,13 +225,6 @@
     <div class="text-behind">Collections</div>
     <div class="sphere"></div>
   </div>
-
-  <footer class="text-center py-3">
-    <div class="container">
-      <p class="mb-0">&copy; <?php echo date("Y"); ?> HARTONO COLLECTION. All rights reserved.</p>
-      <p class="mb-0">Email: info@hartonocollection.com | Phone: (123) 456-7890</p>
-    </div>
-  </footer>
 
   <script>
     function toggleMenu() {

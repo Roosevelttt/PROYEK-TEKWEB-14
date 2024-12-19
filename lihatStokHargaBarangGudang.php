@@ -69,16 +69,6 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
           flex: 1;
         }
 
-        footer {
-          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-          color: white;
-          z-index: 2;
-          height:15vh;
-          padding: 2vh;
-          font-weight: 200;
-          font-size: smaller;
-        }
-
         .navbar {
           width: 100%;
           margin: 0;
@@ -384,11 +374,5 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
     <!-- Bootstrap JS & Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybB6jl2HffQ2X7Scz5ptF5cH0g6XPtjAdfXJHeKSzTZRcd0i9m" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0V8Fq1FnD5k0lGc9eQ7o5PHDaMXYe+J6/9PqBO8WyEXpA9OZ" crossorigin="anonymous"></script>
-    <footer class="text-center py-3">
-  <div class="container1">
-    <p class="mb-0">&copy; <?php echo date("Y"); ?> MUSE COLLECTION. All rights reserved.</p>
-    <p class="mb-0">Email: info@musecollection.com | Phone: (123) 456-7890</p>
-  </div>
-</footer>
 </body>
 </html>

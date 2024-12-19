@@ -135,13 +135,6 @@
             text-align: center;
         }
 
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #aaa;
-        }
-
         .center-content {
             position: relative;
             display: flex;
