@@ -239,17 +239,17 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
 <body>
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-    <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
+        <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="menambahProdukBaru.php"><i class="fas fa-box"></i> Produk</a></li>
-                <li class="nav-item"><a class="nav-link" href="pageHarga.php"><i class="fas fa-tags"></i> Harga </a></li>
+                <li class="nav-item"><a class="nav-link active" href="dashboard.php"><i class="fas fa-home"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="menambahProdukBaru.php"><i class="fas fa-box"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="pageHarga.php"><i class="fas fa-tags"></i></a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-store-alt"></i> Stok</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-store-alt"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="pageStokToko.php">Toko</a></li>
                         <li class="dropdown-submenu">
@@ -262,9 +262,9 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="halamanTransaksi.php"><i class="fas fa-exchange-alt"></i> Transaksi</a></li>
+                <li class="nav-item"><a class="nav-link" href="halamanTransaksi.php"><i class="fas fa-exchange-alt"></i></a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users"></i> Karyawan</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="absensi.php">Absensi</a></li>
                         <li><a class="dropdown-item" href="perhitunganGaji.php">Perhitungan Gaji</a></li>
@@ -273,7 +273,7 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-file-alt"></i> Laporan</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-file-alt"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="pageLaporan.php">Transaksi</a></li>
                         <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
@@ -283,7 +283,7 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
             </ul>
         </div>
     </div>
-</nav> 
+</nav>  
 <div class="container">
 <div class="center-content">
         <div class="text-behind">Laporan</div>
