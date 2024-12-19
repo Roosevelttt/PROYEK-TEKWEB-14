@@ -617,8 +617,8 @@ $resultProduk = $conn->query($sqlProduk);
             </select>
             
             <div class="modal-buttons">
-                <button type="submit" name="submit" class="btn">Simpan Produk</button>
-                <button type="button" class="btn" id="closeModalBtn">Tutup</button>
+                <button type="submit" name="submit" class="btn text-dark">Simpan Produk</button>
+                <button type="button" class="btn text-dark" id="closeModalBtn">Tutup</button>
             </div>
         </form>
     </div>
