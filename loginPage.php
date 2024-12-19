@@ -236,7 +236,7 @@
                     text: 'Login berhasil.',
                 }).then(() => {
                     // Redirect after the modal is closed
-                    window.location.href = 'dashboard.php'; // Redirect to dashboard
+                    window.location.href = 'index.php'; // Redirect to dashboard
                 });
             } else {
                 // Reset fields
