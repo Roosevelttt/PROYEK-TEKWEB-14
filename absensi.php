@@ -1,16 +1,48 @@
 <?php
-// Include koneksi database
+session_set_cookie_params(0);
+session_start();  // Mulai sesi
+
+// Cek apakah pengguna sudah login
+if (!isset($_SESSION['id_karyawan'])) {
+    header('Location: loginPage.php');
+    exit();
+}
+
 include 'koneksi.php';
 
 $alert = ''; // Variabel untuk menyimpan notifikasi
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_karyawan = $_POST['id_karyawan'];
-    $current_time = date('H:i'); // Waktu sekarang (jam:menit)
-    $status = 1; // Status hadir
+// Ambil informasi pengguna dari sesi
+$id_karyawan_session = $_SESSION['id_karyawan'];
+$jabatan = $_SESSION['jabatan'];
+$nama_session = $_SESSION['nama'];
 
-    // Validasi keterlambatan
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($jabatan === 'pemilik') {
+        // Jika pemilik, ambil id_karyawan dari form
+        if (isset($_POST['id_karyawan']) && !empty($_POST['id_karyawan'])) {
+            $id_karyawan = intval($_POST['id_karyawan']);
+        } else {
+            // Handle error: id_karyawan tidak diberikan
+            $alert = "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const notyf = new Notyf();
+                        notyf.error('ID Karyawan diperlukan.');
+                    });
+                </script>
+            ";
+            exit();
+        }
+    } else {
+        // Jika bukan pemilik, gunakan id_karyawan dari sesi
+        $id_karyawan = $id_karyawan_session;
+    }
+
+    $current_time = date('H:i'); // Waktu sekarang (jam:menit)
+
     if ($current_time > '07:30') {
+        // Tidak mencatat absensi, hanya memberikan notifikasi keterlambatan
         $alert = "
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -20,30 +52,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>
         ";
     } else {
-        // Query untuk mencatat absensi
-        $stmt = $conn->prepare("INSERT INTO absensi (id_karyawan, jam, status) VALUES (?, NOW(), ?)");
-        $stmt->bind_param("ii", $id_karyawan, $status);
+        // Cek duplikasi absensi
+        $stmt_check = $conn->prepare("SELECT COUNT(*) FROM absensi WHERE id_karyawan = ? AND DATE(jam) = CURDATE()");
+        $stmt_check->bind_param("i", $id_karyawan);
+        $stmt_check->execute();
+        $stmt_check->bind_result($count_absensi);
+        $stmt_check->fetch();
+        $stmt_check->close();
 
-        if ($stmt->execute()) {
+        if ($count_absensi > 0) {
+            // Sudah melakukan absensi hari ini
             $alert = "
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         const notyf = new Notyf();
-                        notyf.success('Absensi berhasil dicatat!');
+                        notyf.error('Anda sudah mencatat absensi hari ini.');
                     });
                 </script>
             ";
         } else {
-            $alert = "
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const notyf = new Notyf();
-                        notyf.error('Gagal mencatat absensi: {$stmt->error}');
-                    });
-                </script>
-            ";
+            // Insert absensi
+            $status = 1; // Status hadir
+            $stmt_insert = $conn->prepare("INSERT INTO absensi (id_karyawan, jam, status) VALUES (?, NOW(), ?)");
+            $stmt_insert->bind_param("ii", $id_karyawan, $status);
+
+            if ($stmt_insert->execute()) {
+                $alert = "
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const notyf = new Notyf();
+                            notyf.success('Absensi berhasil dicatat!');
+                        });
+                    </script>
+                ";
+            } else {
+                // Log error ke file log
+                error_log("Error mencatat absensi: " . $stmt_insert->error);
+                $alert = "
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const notyf = new Notyf();
+                            notyf.error('Gagal mencatat absensi. Silakan coba lagi.');
+                        });
+                    </script>
+                ";
+            }
+            $stmt_insert->close();
         }
-        $stmt->close();
     }
 }
 ?>
@@ -51,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Head content tetap sama -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absensi Karyawan</title>
@@ -61,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 
     <style>
       html, body {
@@ -267,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transform: translateY(-5vh);
         }
         .btn:hover {
-            background-color: radial-gradient(circle, #ffff00, #E1AD15);;
+            background-color: #0056b3; /* Ubah warna hover sesuai kebutuhan */
         }
 
         .translate-y-10 {
@@ -282,12 +338,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         th {
             color:#f8f9fa !important;
         }
-        </style>
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand"href="index.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
+        <a class="navbar-brand" href="index.php">
+            <div class="sphere-small ms-3 me-2"></div>
+            <div class="title">Hartono Collections</div>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -334,64 +393,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </nav> 
 
     <div class="container">
-    <div class="container">
-    <div class="container-glass">
-    <div class="center-content">
-        <div class="text-behind">Absensi</div>
-        <div class="text-behind">Karyawan</div>
-        <div class="sphere"></div>
-    </div>
-        <form method="POST" action="" class="translate-y-10">
-            <div class="mb-5">
-                <label for="id_karyawan" class="form-label text-white my-1">Nama Karyawan</label>
-                <select class="form-select my-1" id="id_karyawan" name="id_karyawan" required>
-                    <option value="" disabled selected>Pilih Nama Karyawan</option>
-                    <?php
-                    // Query untuk mendapatkan daftar karyawan
-                    $result = $conn->query("SELECT id_karyawan, nama FROM karyawan ORDER BY nama ASC");
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='{$row['id_karyawan']}'>{$row['nama']}</option>";
-                    }
-                    ?>
-                </select>
+        <div class="container-glass">
+            <div class="center-content">
+                <div class="text-behind">Absensi</div>
+                <div class="text-behind">Karyawan</div>
+                <div class="sphere"></div>
             </div>
-            <button type="submit" class="btn my-1">Catat Absensi</button>
-        </form>
+            <form method="POST" action="" class="translate-y-10">
+                <div class="mb-5">
+                    <label for="id_karyawan" class="form-label text-white my-1">Nama Karyawan</label>
+                    <?php if ($jabatan === 'pemilik'): ?>
+                        <select class="form-select my-1" id="id_karyawan" name="id_karyawan" required>
+                            <option value="" disabled selected>Pilih Nama Karyawan</option>
+                            <?php
+                            // Query untuk mendapatkan daftar karyawan
+                            $stmt = $conn->prepare("SELECT id_karyawan, nama FROM karyawan ORDER BY nama ASC");
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . htmlspecialchars($row['id_karyawan']) . "'>" . htmlspecialchars($row['nama']) . "</option>";
+                            }
+                            $stmt->close();
+                            ?>
+                        </select>
+                    <?php else: ?>
+                        <!-- Jika bukan pemilik, tampilkan nama karyawan dan set id_karyawan secara tersembunyi -->
+                        <input type="hidden" name="id_karyawan" value="<?php echo htmlspecialchars($id_karyawan_session); ?>">
+                        <input type="text" class="form-control my-1" value="<?php echo htmlspecialchars($nama_session); ?>" readonly>
+                    <?php endif; ?>
+                </div>
+                <button type="submit" class="btn my-1">Catat Absensi</button>
+            </form>
+        </div>
     </div>
-    </div>
-    
+
 
     <div class="container-glass">
-    <div class="container mt-5">
-        <h2>Daftar Absensi Hari Ini</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Jam Absensi</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Query untuk menampilkan absensi hari ini
-                $today = date('Y-m-d');
-                $result = $conn->query("SELECT k.nama, a.jam, a.status 
-                                        FROM absensi a 
-                                        JOIN karyawan k ON a.id_karyawan = k.id_karyawan 
-                                        WHERE DATE(a.jam) = '$today'");
-                while ($row = $result->fetch_assoc()) {
-                    $status_text = $row['status'] == 1 ? 'Hadir' : 'Tidak Hadir';
-                    echo "<tr>
-                        <td>{$row['nama']}</td>
-                        <td>{$row['jam']}</td>
-                        <td>{$status_text}</td>
-                    </tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
+        <div class="container mt-5">
+            <h2>Daftar Absensi Hari Ini</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Jam Absensi</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Query untuk menampilkan absensi hari ini
+                    $today = date('Y-m-d');
+                    if ($jabatan === 'pemilik') {
+                        $stmt = $conn->prepare("SELECT k.nama, a.jam, a.status 
+                                                FROM absensi a 
+                                                JOIN karyawan k ON a.id_karyawan = k.id_karyawan 
+                                                WHERE DATE(a.jam) = ?");
+                        $stmt->bind_param("s", $today);
+                    } else {
+                        $stmt = $conn->prepare("SELECT k.nama, a.jam, a.status 
+                                                FROM absensi a 
+                                                JOIN karyawan k ON a.id_karyawan = k.id_karyawan 
+                                                WHERE DATE(a.jam) = ? AND a.id_karyawan = ?");
+                        $stmt->bind_param("si", $today, $id_karyawan_session);
+                    }
+
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    while ($row = $result->fetch_assoc()) {
+                        $nama = htmlspecialchars($row['nama']);
+                        $jam = htmlspecialchars($row['jam']);
+                        $status_text = ($row['status'] == 1) ? 'Hadir' : 'Terlambat';
+                        echo "<tr>
+                            <td>{$nama}</td>
+                            <td>{$jam}</td>
+                            <td>{$status_text}</td>
+                        </tr>";
+                    }
+
+                    $stmt->close();
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Tampilkan Notifikasi -->
