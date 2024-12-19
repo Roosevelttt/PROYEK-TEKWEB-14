@@ -162,6 +162,22 @@
         .navbar-toggler-icon {
             filter: invert(100%); /* Change to white */
         }
+
+        .responsive-image {
+        width: 100%; /* Gambar akan mengikuti lebar kontainer */
+        height: auto; /* Tinggi gambar disesuaikan secara proporsional */
+        max-width: 100%; /* Tidak akan melampaui lebar kontainer */
+        display: block; /* Menghindari jarak tambahan */
+        padding: 5%;
+        }
+
+        .navbar-logo {
+        height: 100%; /* Gambar akan mengikuti tinggi navbar */
+        max-height: 50px; /* Batas maksimal tinggi gambar */
+        width: auto; /* Lebar otomatis berdasarkan proporsi gambar */
+        object-fit: contain; /* Menjaga proporsi gambar */
+        padding: 5px; /* Opsional: memberikan jarak di sekitar gambar */
+        }
         
   </style>
 </head>
@@ -169,7 +185,9 @@
   <!-- Navbar dan konten lainnya -->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand"href="index.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
+        <a href="index.php">
+          <img src="assets/logo6trsnprnt_1.png" alt="Deskripsi gambar" class="navbar-logo">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -216,9 +234,7 @@
 </nav> 
 
   <div class="center-content">
-    <div class="text-behind">Hartono</div>
-    <div class="text-behind">Collections</div>
-    <div class="sphere"></div>
+    <img src="assets/logo6trsnprnt_1.png" alt="Deskripsi gambar" class="responsive-image">
   </div>
 
   <script>
