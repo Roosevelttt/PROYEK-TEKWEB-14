@@ -155,10 +155,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         h1 {
             margin-bottom: 10px;
         }
-
-        .btn {
-            margin-top: 20px; /* Memberikan jarak antara tombol dan elemen sebelumnya */
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -181,14 +177,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-            transform: translateY(-5vh);
+            font-weight: bold;
         }
         .btn:hover {
             background-color: radial-gradient(circle, #ffff00, #E1AD15);;
@@ -224,15 +225,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         border: 1px solid #ddd;
         border-radius: 4px;
         box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
-    }
-    .modal-buttons {
-        display: flex;
-        justify-content: space-between; /* Jarak antara tombol */
-    }
-    .modal-buttons .btn {
-        flex: 1; /* Tombol mengambil ruang yang sama */
-        margin: 0 5px; /* Jarak antar tombol */
-        transform: translateY(0);
     }
     html, body {
           height: 100%;
@@ -418,22 +410,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 16px;
         }
 
-        input[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            background-color: #007bff; /* Warna Biru */
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3; /* Warna Biru Tua saat hover */
-        }
-
         .notification {
             padding: 15px;
             margin-top: 20px;
@@ -529,7 +505,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Cari Produk">
+                <input class="btn" type="submit" value="Cari Produk">
             </div>
         </form>
     </div>
@@ -560,7 +536,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo '</div>';
 
                 echo '<div class="form-group">';
-                echo '<input type="submit" value="Confirm">';
+                echo '<input type="submit" class="btn" value="Confirm">';
                 echo '</div>';
                 echo '</form>';
             } else {

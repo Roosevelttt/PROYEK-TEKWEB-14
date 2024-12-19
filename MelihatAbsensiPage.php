@@ -10,15 +10,28 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         table {
-            border-collapse: collapse;
+            background-color:transparent;
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: #A1A9B7;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        table th, table td{
+            padding: 10px;
+            text-align: left;
         }
-        th {
-            background-color: #f4f4f4;
+        table th {
+            cursor: pointer;
+            color: #EFF0F3;
+        }
+
+        table tr:hover {
+            background: #252527;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            color: #D0D4DB;
+            font-weight: bolder;
         }
         html, body {
           height: 100%;
@@ -195,16 +208,24 @@
         }
 
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
+
         .btn:hover {
-            background-color: radial-gradient(circle, #ffff00, #E1AD15);
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
         }
 
         .translate-y-10 {

@@ -206,13 +206,24 @@ if (!isset($_SESSION['jabatan']) || ($_SESSION['jabatan'] !== 'kasir' && $_SESSI
         }
 
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
         }
         .btn:hover {
             background-color: radial-gradient(circle, #ffff00, #E1AD15);
@@ -285,8 +296,8 @@ if (!isset($_SESSION['jabatan']) || ($_SESSION['jabatan'] !== 'kasir' && $_SESSI
         </div>
     </div>
 </nav>  
-    <div class="container mb-3 pt-6">
-    <div class="center-content">
+    <div class="container mb-5 pt-6">
+    <div class="center-content mb-5">
         <div class="text-behind">Halaman</div>
         <div class="text-behind">Transaksi</div>
         <div class="sphere"></div>
@@ -319,11 +330,11 @@ if (!isset($_SESSION['jabatan']) || ($_SESSION['jabatan'] !== 'kasir' && $_SESSI
             <input class="form-control mb-3" id="kodeProduk" type="text" placeholder="Kode Produk" aria-label="Kode Produk">
             <input class="form-control mb-3" id="ukuran" type="text" placeholder="Ukuran" aria-label="Ukuran">
             <input class="form-control mb-3" id="jumlah" type="number" placeholder="Jumlah" aria-label="Jumlah">
-            <button type="button" id="btnAddDetail" class="btn btn-primary">ADD</button>
+            <button type="button" id="btnAddDetail" class="btn">ADD</button>
         </div>
 
         <!-- tabel produk-->
-        <table id="tblProdukHead" class="table table-success table-striped">
+        <table id="tblProdukHead" class="table table-striped">
         <thead>
             <tr>
             <th scope="col">Produk</th>
@@ -348,7 +359,7 @@ if (!isset($_SESSION['jabatan']) || ($_SESSION['jabatan'] !== 'kasir' && $_SESSI
                     <input class="form-control" type="text" id="hargatotal" value="" aria-label="Disabled harga" disabled readonly>
                 </div>
                 <div class="container mb-3">
-                    <button type="button" id="btnKonfirmasiTransaksi" class="btn btn-primary">CONFIRM</button>
+                    <button type="button" id="btnKonfirmasiTransaksi" class="btn">CONFIRM</button>
                 </div>
             </div>
         </div>
@@ -367,7 +378,7 @@ if (!isset($_SESSION['jabatan']) || ($_SESSION['jabatan'] !== 'kasir' && $_SESSI
                 Pengurangan stok terkonfirmasi.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -384,7 +395,7 @@ if (!isset($_SESSION['jabatan']) || ($_SESSION['jabatan'] !== 'kasir' && $_SESSI
                 Transaksi terkonfirmasi.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

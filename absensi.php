@@ -248,17 +248,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         table {
+            background-color:transparent;
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            color:rgb(249, 249, 249);
         }
-        table th, table td {
-            border: 1px solid #ddd;
+        table th, table td{
+            padding: 10px;
             text-align: left;
-            color: #f4f4f4 !important;
+            color: whitesmoke !important;
         }
         table th {
             cursor: pointer;
+            color: #EFF0F3;
+        }
+
+        table tr:hover {
+            background: #252527;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            color: #D0D4DB;
+            font-weight: bolder;
         }
 
         .text-behind {
@@ -313,19 +325,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-            transform: translateY(-5vh);
-        }
-        .btn:hover {
-            background-color: #0056b3; /* Ubah warna hover sesuai kebutuhan */
+            font-weight: bold;
         }
 
+        .btn:hover {
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
+        }
         .translate-y-10 {
             transform: translateY(-10%);
         }

@@ -205,16 +205,24 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
         }
 
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
+
         .btn:hover {
-            background-color: radial-gradient(circle, #ffff00, #E1AD15);
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
         }
 
         .translate-y-10 {
@@ -223,6 +231,32 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
 
         th, td, tr {
             color:#f8f9fa !important;
+        }
+
+
+        table {
+            background-color:transparent;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: #A1A9B7;
+        }
+        table th, table td{
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            cursor: pointer;
+            color: #EFF0F3;
+        }
+
+        table tr:hover {
+            background: #252527;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            color: #D0D4DB;
+            font-weight: bolder;
         }
 
         .form-label{
@@ -295,16 +329,16 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
     <form id="formLaporan" method="POST" class="row g-3 justify-content-center">
         <div class="col-md-4">
             <label for="start_date" class="form-label">Tanggal Awal:</label>
-            <input type="text" name="start_date" id="start_date" class="form-control datepicker" placeholder="YYYY-MM-DD" 
+            <input type="date" name="start_date" id="start_date" class="form-control" 
                    value="<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : ''; ?>" required>
         </div>
         <div class="col-md-4">
             <label for="end_date" class="form-label">Tanggal Akhir:</label>
-            <input type="text" name="end_date" id="end_date" class="form-control datepicker" placeholder="YYYY-MM-DD"
+            <input type="date" name="end_date" id="end_date" class="form-control" 
                    value="<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : ''; ?>" required>
         </div>
         <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100">Go</button>
+            <button type="submit" class="btn  w-100">Go</button>
         </div>
     </form>
 </div>
@@ -312,7 +346,7 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik' && $_SESS
 <!-- TABEL LAPORAN -->
 <div class="container mt-4">
     <div class="container-glass">
-    <table id="laporanTable" class="table table-bordered" style="width: auto;">
+    <table id="laporanTable" class="table" style="width: auto;">
         <thead>
             <tr>
                 <th>Timestamp Transaksi</th>
