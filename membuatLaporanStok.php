@@ -117,127 +117,64 @@ $resultLaporan = $conn->query($sqlLaporan);
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
+            margin: 0 ;
+            padding: 0 ;
         }
-
-        /* Navbar */
-        .navbar {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #343a40;
-        }
-
-        .navbar .container-fluid {
-            max-width: 100%;
-            padding: 0;
-        }
-
-        .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .navbar-nav {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .navbar-nav .nav-item {
-            list-style: none;
-        }
-
-        .navbar-nav .nav-item .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
-        }
-
-        .navbar-nav .nav-item .nav-link:hover {
-            background-color: #007bff;
-            border-radius: 5px;
-        }
-
-        /* Dropdown */
-        .dropdown-menu {
-            left: 0;
-            right: auto;
-        }
-
-        .dropdown-submenu {
-            position: relative;
-        }
-
-        .dropdown-submenu .dropdown-menu {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
-        }
-
-        .dropdown-submenu:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-item {
-            color: #333;
-            padding: 10px 20px;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        /* Main Container */
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form dan Table Styling */
-        .filter-section {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
         }
 
-        .filter-section select,
-        .filter-section input {
-            padding: 8px;
-            margin-right: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .container-transparent {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
         }
 
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            margin-top: 20px; /* Memberikan jarak antara tombol dan elemen sebelumnya */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            color:#f4f4f4;
         }
-
-        table th,
-        table td {
+        table th, table td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
         }
-
         table th {
-            background-color: #f2f2f2;
+            cursor: pointer;
         }
-
-        .submit-btn {
+        table th:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+        }
+        .btn {
             background-color: #007bff;
             color: white;
             border: none;
@@ -246,41 +183,235 @@ $resultLaporan = $conn->query($sqlLaporan);
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
-        .submit-btn:hover {
-            background-color: #0056b3;
+        .btn:hover {
+            background-color: radial-gradient(circle, #ffff00, #E1AD15);;
         }
+        .modal {
+        display: none; /* Sembunyikan modal secara default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Latar belakang semi-transparan */
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease; /* Transisi halus */
+        z-index: 1000; /* Pastikan modal di atas elemen lain */
+    }
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px; /* Maksimal lebar modal */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan untuk efek kedalaman */
+    }
+    .modal-content h3 {
+        margin-bottom: 15px; /* Jarak antara judul dan konten */
+    }
+    .modal-content input, .modal-content select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px; /* Jarak antara input */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    }
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between; /* Jarak antara tombol */
+    }
+    .modal-buttons .btn {
+        flex: 1; /* Tombol mengambil ruang yang sama */
+        margin: 0 5px; /* Jarak antar tombol */
+        transform: translateY(0);
+    }
+    html, body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          background-image: url('assets/background.jpeg');
+          background-size: cover;
+          background-position:center;
+          height:full;
+        }
+
+        main {
+          flex: 1;
+        }
+
         footer {
-            background-color: #332D2D; /* Warna latar belakang footer */
-            color: white; /* Warna teks footer */
-            margin-top: auto; /* Membuat footer menempel di bawah */
-            padding: 20px 0;
-            width: 100%;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+          color: white;
+          z-index: 2;
+          height:15vh;
+          padding: 2vh;
+          font-weight: 200;
+          font-size: smaller;
         }
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
+
+        .navbar {
+          width: 100%;
+          margin: 0;
+          padding: 2vh 1vw;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); 
         }
+
+        .navbar .container-fluid {
+          max-width: 100%;
+          padding: 0;
+        }
+
+        .navbar-brand {
+          color: white;
+          font-size: 1.5rem;
+        }
+
+        .navbar-nav {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .navbar-nav .nav-item {
+          list-style: none;
+          padding: 0 0.5vw;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
         .navbar-nav .nav-item1 .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
         }
+
         .navbar-nav .nav-item1 .nav-link:hover {
-                    background-color: #ff0000;
-                    border-radius: 5px;
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
+        .navbar-nav .nav-item .nav-link:hover {
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
+        }
 
+        .dropdown-menu {
+          left: 0;
+          right: auto;
+        }
+
+        .dropdown-submenu {
+          position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+          display: none;
+          position: absolute;
+          left: 100%;
+          top: 0;
+        }
+
+        .dropdown-submenu:hover .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-item {
+          color: #333;
+          padding: 10px 20px;
+        }
+
+        .dropdown-item:hover {
+          background-color: #f8f9fa;
+        }
+
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding:3vh;
+          height: 30vh;
+          text-align: center;
+          transform: translateY(10%);
+        }
+
+        .sphere {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+        .sphere-small {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+        }
+
+        .text-behind {
+          position: absolute;
+          font-size: 5vw;
+          color: #fff;
+          margin: 3vh;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(100%); /* Change to white */
+        }
+
+        select, input {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand"href="dashboard.php">  <img src="\img\logomuse.jpg" style="height: 50px; width: auto;"> MUSE COLLECTION</a>
+    <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -324,12 +455,17 @@ $resultLaporan = $conn->query($sqlLaporan);
             </ul>
         </div>
     </div>
-</nav> 
-    <div class="container">
-        <h1>Laporan Stok Barang Gudang</h1>
-        
+</nav>
+    <div class="container-transparent">
+    <div class="center-content">
+        <div class="text-behind">Laporan</div>
+        <div class="text-behind">Stok</div>
+        <div class="sphere"></div>
+    </div>
+
         <div class="filter-section">
             <form method="POST" action="">
+                <div class="input-group">
                 <!-- Dropdown Bulan -->
                 <select name="pilih_bulan" required>
                     <option value="Semua" <?= ($bulanLaporan == 'Semua') ? 'selected' : '' ?>>Semua Bulan</option>
@@ -352,12 +488,15 @@ $resultLaporan = $conn->query($sqlLaporan);
                         </option>
                     <?php endforeach; ?>
                 </select>
-                
+                </div>
+
                 <input type="text" name="search" placeholder="Cari kode barang atau jumlah" value="<?= htmlspecialchars($searchQuery) ?>">
-                <button type="submit" class="submit-btn">Tampilkan Laporan</button>
+                <button type="submit" class="submit-btn btn">Tampilkan Laporan</button>
             </form>
         </div>
+        </div>
 
+        <div class="container">
         <?php if ($resultLaporan->num_rows > 0): ?>
             <h3>Laporan Stok <?= $namaBulan[$bulanLaporan] . ' ' . $tahunLaporan ?></h3>
             <table>

@@ -201,6 +201,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           z-index:1;
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            text-align: left;
+            color: #f4f4f4 !important;
+        }
+        table th {
+            cursor: pointer;
+        }
+
         .text-behind {
           position: absolute;
           font-size: 5vw;

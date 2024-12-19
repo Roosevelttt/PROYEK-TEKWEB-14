@@ -105,188 +105,300 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .navbar {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0 ;
+            padding: 0 ;
+        }
+        .container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
+        }
+
+        .container-transparent {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+        table {
             width: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #332D2D;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color:#f4f4f4;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            background-color: transparent !important;
+            color: #f4f4f4 !important;
+        }
+        table th {
+            cursor: pointer;
+        }
+        table th:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+        }
+        .btn :not(btn-success){
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: radial-gradient(circle, #ffff00, #E1AD15);;
+        }
+        .modal {
+        display: none; /* Sembunyikan modal secara default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Latar belakang semi-transparan */
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease; /* Transisi halus */
+        z-index: 1000; /* Pastikan modal di atas elemen lain */
+    }
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px; /* Maksimal lebar modal */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan untuk efek kedalaman */
+    }
+    .modal-content h3 {
+        margin-bottom: 15px; /* Jarak antara judul dan konten */
+    }
+    .modal-content input, .modal-content select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px; /* Jarak antara input */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    }
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between; /* Jarak antara tombol */
+    }
+    .modal-buttons .btn {
+        flex: 1; /* Tombol mengambil ruang yang sama */
+        margin: 0 5px; /* Jarak antar tombol */
+        transform: translateY(0);
+    }
+    html, body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          background-image: url('assets/background.jpeg');
+          background-size: cover;
+          background-position:center;
+          height:full;
+        }
+
+        main {
+          flex: 1;
+        }
+
+        footer {
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+          color: white;
+          z-index: 2;
+          height:15vh;
+          padding: 2vh;
+          font-weight: 200;
+          font-size: smaller;
+        }
+
+        .navbar {
+          width: 100%;
+          margin: 0;
+          padding: 2vh 1vw;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); 
         }
 
         .navbar .container-fluid {
-            max-width: 100%;
-            padding: 0;
+          max-width: 100%;
+          padding: 0;
         }
 
         .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
+          color: white;
+          font-size: 1.5rem;
         }
 
         .navbar-nav {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
         }
 
         .navbar-nav .nav-item {
-            list-style: none;
+          list-style: none;
+          padding: 0 0.5vw;
         }
 
         .navbar-nav .nav-item .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
+        .navbar-nav .nav-item1 .nav-link {
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
+        .navbar-nav .nav-item1 .nav-link:hover {
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
         .navbar-nav .nav-item .nav-link:hover {
-            background-color: #007bff;
-            border-radius: 5px;
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
         .dropdown-menu {
-            left: 0;
-            right: auto;
+          left: 0;
+          right: auto;
         }
 
         .dropdown-submenu {
-            position: relative;
+          position: relative;
         }
 
         .dropdown-submenu .dropdown-menu {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
+          display: none;
+          position: absolute;
+          left: 100%;
+          top: 0;
         }
 
         .dropdown-submenu:hover .dropdown-menu {
-            display: block;
+          display: block;
         }
 
         .dropdown-item {
-            color: #333;
-            padding: 10px 20px;
+          color: #333;
+          padding: 10px 20px;
         }
 
         .dropdown-item:hover {
-            background-color: #f8f9fa;
+          background-color: #f8f9fa;
         }
 
-        .navbar-nav .nav-item .nav-link[href="loginPage.php"]:hover {
-            background-color: red;
-            border-radius: 5px;
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding:3vh;
+          height: 30vh;
+          text-align: center;
+          transform: translateY(10%);
         }
 
-        @media (min-width: 992px) {
-            .dropdown-submenu:hover .dropdown-menu {
-                display: block;
-            }
+        .sphere {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+        .sphere-small {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
         }
 
-        .dropdown-submenu.show .dropdown-menu {
-            display: block;
+        .text-behind {
+          position: absolute;
+          font-size: 5vw;
+          color: #fff;
+          margin: 3vh;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
         }
 
-        @media (max-width: 991px) {
-            .dropdown-menu .show {
-                display: block !important;
-            }
-
-            .dropdown-submenu .dropdown-menu {
-                position: relative;
-                left: 0;
-                top: 0;
-                margin-left: 1rem;
-            }
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
         }
 
         .navbar-toggler-icon {
-            background-image: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 24px;
-            position: relative;
+            filter: invert(100%); /* Change to white */
         }
-        .navbar-toggler-icon::before,
-        .navbar-toggler-icon::after,
-        .navbar-toggler-icon div {
-            content: '';
-            background-color: white; 
-            width: 100%;
-            height: 3px;
-            position: absolute;
-            left: 0;
-        }
-        .navbar-toggler-icon::before {
-            top: 0;
-        }
-        .navbar-toggler-icon div {
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .navbar-toggler-icon::after {
-            bottom: 0;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .container {
-            flex: 1; 
-        }
-
-        .footer {
-            background-color: #332D2D;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            width: 100%;
-        }
-
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.dropdown-submenu > a').forEach(function (dropdownToggle) {
-                dropdownToggle.addEventListener('click', function (e) {
-                    var submenu = this.nextElementSibling;
-                    if (submenu) {
-                        submenu.classList.toggle('show');
-                    }
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-            });
-
-            // Menutup dropdown saat klik di luar
-            document.addEventListener('click', function (e) {
-                document.querySelectorAll('.dropdown-menu .show').forEach(function (openSubmenu) {
-                    openSubmenu.classList.remove('show');
-                });
-            });
-        });
-    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.php">
-          <img src="/img/logomuse.jpg" style="height: 50px; width: auto;"> MUSE COLLECTION
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon">
-            <div></div>
-          </span>
+    <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -331,70 +443,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             </ul>
         </div>
     </div>
-</nav>
-<div class="container mt-5">
-    <div class="text-center">
-        <h2>Daftar Karyawan</h2>
+</nav> 
+    <div class="container-transparent mt-5">
+        <div class="center-content">
+            <div class="text-behind">Daftar</div>
+            <div class="text-behind">Karyawan</div>
+            <div class="sphere"></div>
+        </div>
         <form method="POST" action="">
             <input type="hidden" name="action" value="all">
             <button type="submit" class="btn btn-success mb-3">Hitung Gaji Semua Karyawan</button>
         </form>
-    </div>
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Nama</th>
-                <th>Pekerjaan</th>
-                <th>Gaji</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-        $result = $conn->query("SELECT k.id_karyawan, k.nama, k.gaji, k.periode_terakhir, k.kode_karyawan
-                                FROM karyawan k 
-                                WHERE k.kode_karyawan NOT RLIKE '^[pP][0-9]+'");
+        </div>
 
-        while ($row = $result->fetch_assoc()) {
-            $periode_terakhir = $row['periode_terakhir'] ? new DateTime($row['periode_terakhir']) : null;
-            $current_date = new DateTime();
+        <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Gaji</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+    <?php
+    $result = $conn->query("SELECT k.id_karyawan, k.nama, k.gaji, k.periode_terakhir FROM karyawan k");
+    while ($row = $result->fetch_assoc()) {
+        // Gunakan periode_terakhir untuk menentukan status
+        $periode_terakhir = $row['periode_terakhir'] ? new DateTime($row['periode_terakhir']) : null;
+        $current_date = new DateTime();
 
             $status = ($periode_terakhir === null || $periode_terakhir->diff($current_date)->y >= 1) 
                 ? '<span class="text-danger">Perlu Diperbarui</span>' 
                 : '<span class="text-success">Terkini</span>';
 
-            // Menentukan pekerjaan berdasarkan kode_karyawan
-            $kode = $row['kode_karyawan'];
-            if (preg_match('/^PG/i', $kode)) {
-                $pekerjaan = "Penjaga Gudang";
-            } elseif (preg_match('/^K/i', $kode)) {
-                $pekerjaan = "Karyawan";
-            } else {
-                $pekerjaan = "Lainnya";
-            }
+        echo "<tr>
+            <td>{$row['nama']}</td>
+            <td>Rp " . number_format($row['gaji'], 0, ',', '.') . "</td>
+            <td>{$status}</td>
+            <td>
+                <form method='POST' action='' style='display:inline;'>
+                    <input type='hidden' name='id_karyawan' value='{$row['id_karyawan']}'>
+                    <button type='submit' name='action' value='hitung' class='btn btn-primary btn-sm'>Hitung Gaji</button>
+                </form>
+                <form method='POST' action='' style='display:inline;'>
+                    <input type='hidden' name='id_karyawan' value='{$row['id_karyawan']}'>
+                    <button type='submit' name='action' value='detail' class='btn btn-secondary btn-sm'>Detail Gaji</button>
+                </form>
+            </td>
+        </tr>";
+    }
+    ?>
+    
+</tbody>
 
-            echo "<tr>
-                <td>{$row['nama']}</td>
-                <td>{$pekerjaan}</td>
-                <td>Rp " . number_format($row['gaji'], 0, ',', '.') . "</td>
-                <td>{$status}</td>
-                <td>
-                    <form method='POST' action='' style='display:inline;'>
-                        <input type='hidden' name='id_karyawan' value='{$row['id_karyawan']}'>
-                        <button type='submit' name='action' value='hitung' class='btn btn-primary btn-sm'>Hitung Gaji</button>
-                    </form>
-                    <form method='POST' action='' style='display:inline;'>
-                        <input type='hidden' name='id_karyawan' value='{$row['id_karyawan']}'>
-                        <button type='submit' name='action' value='detail' class='btn btn-secondary btn-sm'>Detail Gaji</button>
-                    </form>
-                </td>
-            </tr>";
-        }
-        ?>
-        </tbody>
-    </table>
-</div>
+        </table>
+    </div>
 
 <!-- Rincian Perhitungan -->
 <?php echo $details; ?>
