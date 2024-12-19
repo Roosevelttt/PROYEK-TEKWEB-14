@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .navbar-nav .nav-item {
           list-style: none;
-          padding: 0 1vw;
+          padding: 0 0.5vw;
         }
 
         .navbar-nav .nav-item .nav-link {
