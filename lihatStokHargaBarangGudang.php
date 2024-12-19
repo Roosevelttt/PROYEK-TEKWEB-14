@@ -215,7 +215,7 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
         .navbar-toggler-icon {
             filter: invert(100%); /* Change to white */
         }
-        .container-glass {
+        .container {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -225,21 +225,69 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
             padding: 20px;
             display: flex;
             flex-direction: column;
-        
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
             margin: 20px auto;
         }
 
+        .container-transparent {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
+        }
+
+        table {
+            background-color:transparent;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: #A1A9B7;
+        }
+
+        table td {
+          color: #A1A9B7 !important;
+        }
+        table th, table td{
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            cursor: pointer;
+            color: #EFF0F3;
+        }
+
+        table tr:hover {
+            background: #252527;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            color: #D0D4DB;
+            font-weight: bolder;
+        }
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
+
         .btn:hover {
-            background-color: radial-gradient(circle, #ffff00, #E1AD15);
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
         }
 
         .translate-y-10 {
@@ -313,7 +361,7 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
         </div>
     </div>
 </nav>  
-    <div class="container">
+    <div class="container-transparent">
     <div class="center-content">
         <div class="text-behind">Stok</div>
         <div class="text-behind">Gudang</div>
@@ -332,7 +380,10 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
                 <button type="submit" class="btn btn-custom">Lihat Stok</button>
             </div>
         </form>
+      </div>
 
+
+      <div class="container">
         <?php
         // Mendapatkan kode barang dari input pengguna
         $kode_barang = isset($_GET['kode_barang']) ? $_GET['kode_barang'] : null;
@@ -344,7 +395,7 @@ function lihatStokHargaBarangGudang($kode_barang = null) {
 
             if ($result && $result->num_rows > 0) {
                 // Menampilkan data produk dalam tabel
-                echo "<table class='table table-bordered mt-4'>
+                echo "<table class='mt-4'>
                         <thead>
                             <tr>
                                 <th>Kode Barang</th>

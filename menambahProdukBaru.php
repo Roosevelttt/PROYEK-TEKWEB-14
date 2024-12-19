@@ -233,37 +233,57 @@ $resultProduk = $conn->query($sqlProduk);
         }
 
         table {
+            background-color:transparent;
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            color:#f4f4f4;
+            color: #A1A9B7;
         }
         table th, table td{
-            border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
         }
         table th {
             cursor: pointer;
+            color: #EFF0F3;
         }
-        table th:hover {
+
+        table tr:hover {
+            background: #252527;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            color: #D0D4DB;
+            font-weight: bolder;
+        }
+
+        input {
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        .btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
-        }
-        .btn {
-            background-color: #007bff;
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
+
         .btn:hover {
-            background-color: radial-gradient(circle, #ffff00, #E1AD15);;
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
+        }
+        .btn-delete:hover {
+            background: radial-gradient(circle, #C30025, #820018);
+            color:#f4f4f4;
         }
         .modal {
         display: none; /* Sembunyikan modal secara default */
@@ -528,13 +548,17 @@ $resultProduk = $conn->query($sqlProduk);
 <!-- Search Form -->
 <div class="search-container text-center">
     <form id="form-search" method="GET" action="">
+    <div class="input-group">
         <input type="text" name="search" placeholder="Cari kode, ukuran, stok, harga" value="<?= isset($searchTerm) ? htmlspecialchars($searchTerm) : '' ?>">
-        <button type="submit" class="btn submit-btn">Search</button>
+        <button type="submit" class="btn submit-btn">
+        <i class="fas fa-search"></i>
+        </button>
+        </div>
     </form>
 </div>
     
     <!-- Tombol untuk menambah produk -->
-    <button class="btn" id="addProductBtn">Tambah Produk</button>
+    <button class="btn mt-3" id="addProductBtn">Tambah Produk</button>
 </div>
 
     <div class="container">

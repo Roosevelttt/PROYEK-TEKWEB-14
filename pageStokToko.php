@@ -44,7 +44,6 @@ $result = $conn->query($query);
           background-size: cover;
           background-position:center;
           height:full;
-          color:#f8f9fa !important;
         }
 
         main {
@@ -207,29 +206,69 @@ $result = $conn->query($query);
             padding: 20px;
             display: flex;
             flex-direction: column;
-        
             margin: 20px auto;
         }
 
         .btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
+
         .btn:hover {
-            background-color: radial-gradient(circle, #ffff00, #E1AD15);
+            background: radial-gradient(circle, #ffff00, #E1AD15);
+            color: #000;
+        }
+
+        .btn-delete:hover {
+            background: radial-gradient(circle, #C30025, #820018);
+            color:#f4f4f4;
         }
 
         .translate-y-10 {
             transform: translateY(-10%);
         }
 
+        table {
+            background-color:transparent;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td{
+            padding: 10px;
+            text-align: left;
+        }
+
+        table td {
+            color: #A1A9B7 !important;
+        }
+
+        table th {
+            cursor: pointer;
+            color: #EFF0F3 !important;
+        }
+
+        table tr:hover {
+            background: #252527;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            color: #D0D4DB;
+            font-weight: bolder;
+        }
         th, td, tr {
-            color:#f8f9fa !important;
+            border: transparent !important;
         }
 
         .form-label{
