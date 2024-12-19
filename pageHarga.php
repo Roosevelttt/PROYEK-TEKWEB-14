@@ -84,13 +84,19 @@ if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik') {
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
         .btn {
-            background-color: #007bff;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
         .btn:hover {
             background-color: radial-gradient(circle, #ffff00, #E1AD15);;
