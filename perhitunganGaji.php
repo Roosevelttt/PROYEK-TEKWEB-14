@@ -146,12 +146,11 @@ body {
         }
         table {
             width: 100%;
-            border-collapse: collapse;
             margin-top: 20px;
-            color:#f4f4f4;
+            color: #f4f4f4;
         }
         table th, table td {
-            border: 1px solid #ddd;
+            border: 1px solid linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
             padding: 10px;
             text-align: left;
             background-color: transparent !important;
@@ -160,11 +159,10 @@ body {
         table th {
             cursor: pointer;
         }
-        table th:hover {
+        table th:hover, td:hover {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
         .btn :not(btn-success){
