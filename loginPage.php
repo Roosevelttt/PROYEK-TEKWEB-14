@@ -18,7 +18,7 @@
             background-image: url('assets/background.jpeg');
             background-size: cover;
             background-position:center;
-            color:#f8f9fa !important;
+            color: #f8f9fa !important;
         }
     
         label {
@@ -33,7 +33,6 @@
             border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             padding: 20px;
-            display: flex;
             flex-direction: column;
         }
 
@@ -169,7 +168,7 @@
             <button type="submit">Login</button>
             <div id="notification" class="notification"></div>
         </form>
-        <div class="footer">&copy; 2024 Muse Collection</div>
+        <div class="footer">&copy; 2024 Hartono Collection</div>
     </div>
 
     <script>

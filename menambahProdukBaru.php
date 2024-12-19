@@ -124,6 +124,16 @@ $resultUkuran = $conn->query($sqlUkuran);
             margin: 20px auto;
         }
 
+        .container-transparent {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
+        }
+
         h1 {
             margin-bottom: 10px;
         }
@@ -135,6 +145,7 @@ $resultUkuran = $conn->query($sqlUkuran);
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            color:#f4f4f4;
         }
         table th, table td {
             border: 1px solid #ddd;
@@ -142,11 +153,14 @@ $resultUkuran = $conn->query($sqlUkuran);
             text-align: left;
         }
         table th {
-            background-color: #f2f2f2;
             cursor: pointer;
         }
         table th:hover {
-            background-color: #e0e0e0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
         .btn {
             background-color: #007bff;
@@ -200,6 +214,7 @@ $resultUkuran = $conn->query($sqlUkuran);
     .modal-buttons .btn {
         flex: 1; /* Tombol mengambil ruang yang sama */
         margin: 0 5px; /* Jarak antar tombol */
+        transform: translateY(0);
     }
     html, body {
           height: 100%;
@@ -422,7 +437,7 @@ $resultUkuran = $conn->query($sqlUkuran);
         </div>
     </div>
 </nav> 
-<div class="container">
+<div class="container-transparent">
     <div class="center-content">
         <div class="text-behind">Daftar</div>
         <div class="text-behind">Produk</div>
@@ -431,7 +446,9 @@ $resultUkuran = $conn->query($sqlUkuran);
     
     <!-- Tombol untuk menambah produk -->
     <button class="btn" id="addProductBtn">Tambah Produk</button>
-    
+</div>
+
+    <div class="container">
     <!-- Daftar Produk -->
     <?php if ($resultProduk->num_rows > 0): ?>
         <table id="productTable">
@@ -602,8 +619,8 @@ $resultUkuran = $conn->query($sqlUkuran);
 </script>
 <footer class="text-center py-3">
   <div class="container1">
-    <p class="mb-0">&copy; <?php echo date("Y"); ?> MUSE COLLECTION. All rights reserved.</p>
-    <p class="mb-0">Email: info@musecollection.com | Phone: (123) 456-7890</p>
+    <p class="mb-0">&copy; <?php echo date("Y"); ?> HARTONO COLLECTION. All rights reserved.</p>
+    <p class="mb-0">Email: info@hartonocollection.com | Phone: (123) 456-7890</p>
   </div>
 </footer>
 </body>
