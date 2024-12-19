@@ -39,8 +39,9 @@
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
-            padding: 10px 80px 30px;
+            padding: 5px 50px 30px;
             flex-direction: column;
+            width: 400px;
         }
 
         .login-box h2 {
