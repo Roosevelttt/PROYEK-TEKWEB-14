@@ -152,116 +152,294 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
   <style>
-        .navbar {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #332D2D;
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0 ;
+            padding: 0 ;
         }
-
-        .navbar .container-fluid {
-            max-width: 100%;
-            padding: 0;
-        }
-
-        .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .navbar-nav {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .navbar-nav .nav-item {
-            list-style: none;
-        }
-
-        .navbar-nav .nav-item .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
-        }
-
-        .navbar-nav .nav-item .nav-link:hover {
-            background-color: #007bff;
-            border-radius: 5px;
-        }
-
-        .dropdown-menu {
-            left: 0;
-            right: auto;
-        }
-
-        .dropdown-submenu {
-            position: relative;
-        }
-
-        .dropdown-submenu .dropdown-menu {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
-        }
-
-        .dropdown-submenu:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-item {
-            color: #333;
-            padding: 10px 20px;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-        }
-        html, body {
-            height: 100%; 
-            margin: 0; 
+        .container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
         }
 
-        .container {
-            flex: 1; 
-            overflow-y: auto; 
-            padding-bottom: 60px; 
+        .container-transparent {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Memusatkan secara horizontal */
+            justify-content: center; /* Memusatkan secara vertikal */
+            text-align: center; /* Menyelaraskan teks ke tengah */
+            margin: 20px auto;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color:#f4f4f4;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            background-color: transparent !important;
+            color: #f4f4f4 !important;
+        }
+        table th {
+            cursor: pointer;
+        }
+        table th:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+        }
+        .btn :not(btn-success){
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: radial-gradient(circle, #ffff00, #E1AD15);;
+        }
+        .modal {
+        display: none; /* Sembunyikan modal secara default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Latar belakang semi-transparan */
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease; /* Transisi halus */
+        z-index: 1000; /* Pastikan modal di atas elemen lain */
+    }
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px; /* Maksimal lebar modal */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan untuk efek kedalaman */
+    }
+    .modal-content h3 {
+        margin-bottom: 15px; /* Jarak antara judul dan konten */
+    }
+    .modal-content input, .modal-content select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px; /* Jarak antara input */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    }
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between; /* Jarak antara tombol */
+    }
+    .modal-buttons .btn {
+        flex: 1; /* Tombol mengambil ruang yang sama */
+        margin: 0 5px; /* Jarak antar tombol */
+        transform: translateY(0);
+    }
+    html, body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          background-image: url('assets/background.jpeg');
+          background-size: cover;
+          background-position:center;
+          height:full;
+        }
+
+        main {
+          flex: 1;
         }
 
         footer {
-            position: sticky; 
-            left: 0; 
-            bottom: 0;
-            width: 100%; 
-            background-color: #332D2D; 
-            color: white; 
-            text-align: center; 
-            padding: 20px 0;
-            z-index: 1000;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+          color: white;
+          z-index: 2;
+          height:15vh;
+          padding: 2vh;
+          font-weight: 200;
+          font-size: smaller;
+        }
+
+        .navbar {
+          width: 100%;
+          margin: 0;
+          padding: 2vh 1vw;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); 
+        }
+
+        .navbar .container-fluid {
+          max-width: 100%;
+          padding: 0;
+        }
+
+        .navbar-brand {
+          color: white;
+          font-size: 1.5rem;
+        }
+
+        .navbar-nav {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .navbar-nav .nav-item {
+          list-style: none;
+          padding: 0 0.5vw;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
         }
 
         .navbar-nav .nav-item1 .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
         }
 
         .navbar-nav .nav-item1 .nav-link:hover {
-            background-color: #ff0000;
-            border-radius: 5px;
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
         }
 
-        </style>
+        .navbar-nav .nav-item .nav-link:hover {
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
+        }
+
+        .dropdown-menu {
+          left: 0;
+          right: auto;
+        }
+
+        .dropdown-submenu {
+          position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+          display: none;
+          position: absolute;
+          left: 100%;
+          top: 0;
+        }
+
+        .dropdown-submenu:hover .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-item {
+          color: #333;
+          padding: 10px 20px;
+        }
+
+        .dropdown-item:hover {
+          background-color: #f8f9fa;
+        }
+
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding:3vh;
+          height: 30vh;
+          text-align: center;
+          transform: translateY(10%);
+        }
+
+        .sphere {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+        .sphere-small {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+        }
+
+        .text-behind {
+          position: absolute;
+          font-size: 5vw;
+          color: #fff;
+          margin: 3vh;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(100%); /* Change to white */
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand"href="dashboard.php">  <img src="\img\logomuse.jpg" style="height: 50px; width: auto;"> MUSE COLLECTION</a>
+    <a class="navbar-brand"href="dashboard.php">  <div class="sphere-small ms-3 me-2"></div> <div class="title">Hartono Collections</div></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -306,12 +484,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </nav> 
-    <div class="container mt-5">
-        <h2>Daftar Karyawan</h2>
+    <div class="container-transparent mt-5">
+        <div class="center-content">
+            <div class="text-behind">Daftar</div>
+            <div class="text-behind">Karyawan</div>
+            <div class="sphere"></div>
+        </div>
         <form method="POST" action="">
             <input type="hidden" name="action" value="all">
             <button type="submit" class="btn btn-success mb-3">Hitung Gaji Semua Karyawan</button>
         </form>
+        </div>
+
+        <div class="container">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -355,7 +540,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </tbody>
 
         </table>
-        
     </div>
 
     <!-- Rincian Perhitungan -->

@@ -182,7 +182,6 @@ $resultLaporan = $conn->query($sqlLaporan);
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-            transform: translateY(-5vh);
         }
         .btn:hover {
             background-color: radial-gradient(circle, #ffff00, #E1AD15);;
@@ -399,6 +398,14 @@ $resultLaporan = $conn->query($sqlLaporan);
         .navbar-toggler-icon {
             filter: invert(100%); /* Change to white */
         }
+
+        select, input {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -458,6 +465,7 @@ $resultLaporan = $conn->query($sqlLaporan);
 
         <div class="filter-section">
             <form method="POST" action="">
+                <div class="input-group">
                 <!-- Dropdown Bulan -->
                 <select name="pilih_bulan" required>
                     <option value="Semua" <?= ($bulanLaporan == 'Semua') ? 'selected' : '' ?>>Semua Bulan</option>
@@ -480,7 +488,8 @@ $resultLaporan = $conn->query($sqlLaporan);
                         </option>
                     <?php endforeach; ?>
                 </select>
-                
+                </div>
+
                 <input type="text" name="search" placeholder="Cari kode barang atau jumlah" value="<?= htmlspecialchars($searchQuery) ?>">
                 <button type="submit" class="submit-btn btn">Tampilkan Laporan</button>
             </form>

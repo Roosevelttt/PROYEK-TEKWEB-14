@@ -147,7 +147,7 @@ $resultUkuran = $conn->query($sqlUkuran);
             margin-top: 20px;
             color:#f4f4f4;
         }
-        table th, table td {
+        table th, table td{
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
