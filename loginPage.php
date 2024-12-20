@@ -181,15 +181,27 @@
         .text-behind:last-child {
             transform: translateY(50%);
         }
+        .responsive-image {
+        width: 100%; /* Gambar akan mengikuti lebar kontainer */
+        height: auto; /* Tinggi gambar disesuaikan secara proporsional */
+        max-width: 100%; /* Tidak akan melampaui lebar kontainer */
+        display: block; /* Menghindari jarak tambahan */
+        }
+
+        .navbar-logo {
+        height: 100%; /* Gambar akan mengikuti tinggi navbar */
+        max-height: 50px; /* Batas maksimal tinggi gambar */
+        width: auto; /* Lebar otomatis berdasarkan proporsi gambar */
+        object-fit: contain; /* Menjaga proporsi gambar */
+        padding: 5px; /* Opsional: memberikan jarak di sekitar gambar */
+        }
     </style>
 </head>
 
 <body>
     <div class="login-box">
-        <div class="center-content">
-            <div class="text-behind">Hartono</div>
-            <div class="text-behind">Collections</div>
-            <div class="sphere"></div>
+    <div class="center-content">
+            <img src="assets/logo6trsnprnt_1.png" alt="Deskripsi gambar" class="responsive-image">
         </div>
         <form id="login-form">
             <div class="user-box">

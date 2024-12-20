@@ -173,7 +173,7 @@
   </style>
 </head>
 <body>
-  <!-- Navbar dan konten lainnya -->
+  
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
     <a href="index.php">

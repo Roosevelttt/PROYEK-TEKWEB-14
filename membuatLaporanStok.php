@@ -452,69 +452,67 @@ $resultLaporan = $conn->query($sqlLaporan);
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
+        .navbar-logo {
+        height: 100%; /* Gambar akan mengikuti tinggi navbar */
+        max-height: 50px; /* Batas maksimal tinggi gambar */
+        width: auto; /* Lebar otomatis berdasarkan proporsi gambar */
+        object-fit: contain; /* Menjaga proporsi gambar */
+        padding: 5px; /* Opsional: memberikan jarak di sekitar gambar */
+        }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand"href="index.php">
-                <div class="sphere-small ms-3 me-2"></div>
-                <div class="title">Hartono Collections</div>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.php"><i class="fas fa-home"></i></a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="menambahProdukBaru.php"><i
-                                class="fas fa-box"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="pageHarga.php"><i class="fas fa-tags"></i></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-store-alt"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="pageStokToko.php">Toko</a></li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Gudang</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="lihatStokHargaBarangGudang.php">Lihat Stok</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="tambahStokGudang.php">Tambah Stok</a></li>
-                                    <li><a class="dropdown-item" href="pindah_stokGudang.php">Pindah Stok</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="halamanTransaksi.php"><i
-                                class="fas fa-exchange-alt"></i></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="absensi.php">Absensi</a></li>
-                            <li><a class="dropdown-item" href="perhitunganGaji.php">Perhitungan Gaji</a></li>
-                            <li><a class="dropdown-item" href="MelihatAbsensiPage.php">List Absensi</a></li>
-                            <li><a class="dropdown-item" href="pageKaryawan.php">Manajemen Karyawan</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-file-alt"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="pageLaporan.php">Transaksi</a></li>
-                            <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item1"><a class="nav-link" href="loginPage.php"><i class="fas fa-sign-out-alt"></i>
-                            Logout</a></li>
-                </ul>
-            </div>
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+    <a href="index.php">
+          <img src="assets/logo6trsnprnt_1.png" alt="Deskripsi gambar" class="navbar-logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="index.php"><i class="fas fa-home"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="menambahProdukBaru.php"><i class="fas fa-box"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="pageHarga.php"><i class="fas fa-tags"></i></a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-store-alt"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="pageStokToko.php">Toko</a></li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">Gudang</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="lihatStokHargaBarangGudang.php">Lihat Stok</a></li>
+                                <li><a class="dropdown-item" href="tambahStokGudang.php">Tambah Stok</a></li>
+                                <li><a class="dropdown-item" href="pindah_stokGudang.php">Pindah Stok</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="halamanTransaksi.php"><i class="fas fa-exchange-alt"></i></a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="absensi.php">Absensi</a></li>
+                        <li><a class="dropdown-item" href="perhitunganGaji.php">Perhitungan Gaji</a></li>
+                        <li><a class="dropdown-item" href="MelihatAbsensiPage.php">List Absensi</a></li>
+                        <li><a class="dropdown-item" href="pageKaryawan.php">Manajemen Karyawan</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-file-alt"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="pageLaporan.php">Transaksi</a></li>
+                        <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item1"><a class="nav-link" href="loginPage.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     <div class="container-transparent">
         <div class="center-content">
             <div class="text-behind">Laporan</div>
