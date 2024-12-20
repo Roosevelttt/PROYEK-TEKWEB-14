@@ -162,6 +162,13 @@
         .navbar-toggler-icon {
             filter: invert(100%); /* Change to white */
         }
+        .navbar-logo {
+        height: 100%; /* Gambar akan mengikuti tinggi navbar */
+        max-height: 50px; /* Batas maksimal tinggi gambar */
+        width: auto; /* Lebar otomatis berdasarkan proporsi gambar */
+        object-fit: contain; /* Menjaga proporsi gambar */
+        padding: 5px; /* Opsional: memberikan jarak di sekitar gambar */
+        }
         
   </style>
 </head>
