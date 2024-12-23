@@ -1,186 +1,40 @@
 <?php
-include 'koneksi.php';
 
-// Fungsi untuk mendapatkan bulan dan tahun unik dari detail_laporan
-function getUniqueMonthsAndYears($conn)
-{
-    $sql = "SELECT DISTINCT 
-                YEAR(tanggal_in_out) AS tahun, 
-                MONTH(tanggal_in_out) AS bulan
-            FROM detail_laporan
-            ORDER BY tahun DESC, bulan DESC";
-    $result = $conn->query($sql);
+session_set_cookie_params(0);
 
-    $months = [];
-    while ($row = $result->fetch_assoc()) {
-        $months[] = [
-            'tahun' => $row['tahun'],
-            'bulan' => $row['bulan'],
-        ];
-    }
+session_start(); // Start the session
 
-    return $months;
+// Check if the session variable 'role' exists and if it's one of the allowed roles
+if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik') {
+    // Redirect to login page if not logged in or pemilik
+    header('Location: loginPage.php');
+    exit();
 }
-
-// Mendapatkan daftar bulan dan tahun unik
-$uniqueMonths = getUniqueMonthsAndYears($conn);
-
-// Menyusun daftar tahun yang unik untuk dropdown
-$years = array_unique(array_column($uniqueMonths, 'tahun'));
-sort($years); // Urutkan tahun dari yang terbaru
-
-// Mengatur bulan dan tahun default atau dari input
-$currentMonth = date('m');
-$currentYear = date('Y');
-
-// Menangani jika ada input dari form
-if (isset($_POST['pilih_bulan']) && isset($_POST['pilih_tahun'])) {
-    $bulanLaporan = $_POST['pilih_bulan'];
-    $tahunLaporan = $_POST['pilih_tahun'];
-} else {
-    $bulanLaporan = $currentMonth;
-    $tahunLaporan = $currentYear;
-}
-
-// Format bulan menjadi dua digit jika bukan "Semua"
-if ($bulanLaporan !== 'Semua') {
-    $bulanLaporan = str_pad($bulanLaporan, 2, '0', STR_PAD_LEFT);
-}
-
-// Daftar nama bulan dalam bahasa Indonesia
-$namaBulan = [
-    '01' => 'Januari',
-    '02' => 'Februari',
-    '03' => 'Maret',
-    '04' => 'April',
-    '05' => 'Mei',
-    '06' => 'Juni',
-    '07' => 'Juli',
-    '08' => 'Agustus',
-    '09' => 'September',
-    '10' => 'Oktober',
-    '11' => 'November',
-    '12' => 'Desember',
-    'Semua' => 'Semua Periode',
-];
-
-// Mendapatkan input search
-$searchQuery = isset($_POST['search']) ? trim($_POST['search']) : '';
-
-// Menentukan apakah input adalah angka (jumlah) atau kode barang
-$searchCondition = '';
-if ($searchQuery !== '') {
-    if (is_numeric($searchQuery)) {
-        // Search berdasarkan jumlah
-        $searchCondition = ' AND d.quantity = ' . intval($searchQuery);
-    } else {
-        // Search berdasarkan kode barang
-        $searchCondition = " AND p.kode_barang LIKE '%" . $conn->real_escape_string($searchQuery) . "%'";
-    }
-}
-
-// Menentukan kondisi untuk periode
-$periodCondition = '';
-if ($bulanLaporan !== 'Semua' && $tahunLaporan !== 'Semua') {
-    $periodCondition = "WHERE MONTH(d.tanggal_in_out) = $bulanLaporan AND YEAR(d.tanggal_in_out) = $tahunLaporan";
-} elseif ($bulanLaporan !== 'Semua' && $tahunLaporan === 'Semua') {
-    $periodCondition = "WHERE MONTH(d.tanggal_in_out) = $bulanLaporan";
-} elseif ($bulanLaporan === 'Semua' && $tahunLaporan !== 'Semua') {
-    $periodCondition = "WHERE YEAR(d.tanggal_in_out) = $tahunLaporan";
-}
-
-// Query untuk menarik data laporan
-$sqlLaporan = "SELECT 
-                    d.id_detail_laporan,
-                    d.tanggal_in_out,
-                    dp.id_barang,
-                    d.quantity,
-                    d.status_in_out,
-                    p.kode_barang
-               FROM 
-                    detail_laporan d
-               JOIN 
-                    detail_produk dp ON d.id_detprod = dp.id_detprod
-               JOIN 
-                    produk p ON dp.id_barang = p.id_barang
-               $periodCondition
-               $searchCondition
-               ORDER BY d.tanggal_in_out ASC";
-
-$resultLaporan = $conn->query($sqlLaporan);
 ?>
 
-<!DOCTYPE html>
-<html lang="id">
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Stok Barang</title>
+    <title>Absensi Karyawan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <style>
-        /* CSS untuk Navbar dan halaman */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Memusatkan secara horizontal */
-            justify-content: center;
-            /* Memusatkan secara vertikal */
-            text-align: center;
-            /* Menyelaraskan teks ke tengah */
-            margin: 20px auto;
-        }
-
-        .container-transparent {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Memusatkan secara horizontal */
-            justify-content: center;
-            /* Memusatkan secara vertikal */
-            text-align: center;
-            /* Menyelaraskan teks ke tengah */
-            margin: 20px auto;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
         table {
-            background-color: transparent;
+            background-color:transparent;
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
             color: #A1A9B7;
         }
-
-        table th,
-        table td {
+        table th, table td{
             padding: 10px;
             text-align: left;
         }
-
         table th {
             cursor: pointer;
             color: #EFF0F3;
@@ -193,6 +47,179 @@ $resultLaporan = $conn->query($sqlLaporan);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
             color: #D0D4DB;
             font-weight: bolder;
+        }
+        html, body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          background-image: url('assets/background.jpeg');
+          background-size: cover;
+          background-position:center;
+          height:full;
+        }
+
+        main {
+          flex: 1;
+        }
+
+        .navbar {
+          width: 100%;
+          margin: 0;
+          padding: 2vh 1vw;
+          background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); 
+        }
+
+        .navbar .container-fluid {
+          max-width: 100%;
+          padding: 0;
+        }
+
+        .navbar-brand {
+          color: white;
+          font-size: 1.5rem;
+        }
+
+        .navbar-nav {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .navbar-nav .nav-item {
+          list-style: none;
+          padding: 0 0.5vw;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
+        .navbar-nav .nav-item1 .nav-link {
+          color: white;
+          padding: 15px 20px;
+          display: block;
+          text-align: center;
+        }
+
+        .navbar-nav .nav-item1 .nav-link:hover {
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+          color: #000;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          border-radius: 50px;
+        }
+
+        .dropdown-menu {
+          left: 0;
+          right: auto;
+        }
+
+        .dropdown-submenu {
+          position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+          display: none;
+          position: absolute;
+          left: 100%;
+          top: 0;
+        }
+
+        .dropdown-submenu:hover .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-item {
+          color: #333;
+          padding: 10px 20px;
+        }
+
+        .dropdown-item:hover {
+          background-color: #f8f9fa;
+        }
+
+        .center-content {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding:3vh;
+          height: 30vh;
+          text-align: center;
+          transform: translateY(10%);
+        }
+
+        .sphere {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+          transform: translateY(-25%);
+        }
+        .sphere-small {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ffff00, #E1AD15);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          z-index:1;
+        }
+
+        .text-behind {
+          position: absolute;
+          font-size: 5vw;
+          color: #fff;
+          margin: 3vh;
+          font-weight: bold;
+          z-index: 0;
+          white-space: nowrap;
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .text-behind:first-child {
+            transform: translateY(-50%); 
+        }
+        .text-behind:last-child {
+            transform: translateY(50%); 
+        }
+        .title {
+          text-align: center;
+          font-size: 1.5vw;
+          font-weight: bold;
+          white-space: nowrap;
+          padding: 1vw 0;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(100%); /* Change to white */
+        }
+        .container-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 20px auto;
         }
 
         .btn {
@@ -216,241 +243,17 @@ $resultLaporan = $conn->query($sqlLaporan);
             color: #000;
         }
 
-        .modal {
-            display: none;
-            /* Sembunyikan modal secara default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            /* Latar belakang semi-transparan */
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.3s ease;
-            /* Transisi halus */
-            z-index: 1000;
-            /* Pastikan modal di atas elemen lain */
+        .translate-y-10 {
+            transform: translateY(-10%);
         }
 
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            /* Maksimal lebar modal */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            /* Bayangan untuk efek kedalaman */
+        .container h2 {
+            font-weight:bold;
+            color:#f8f9fa;
         }
 
-        .modal-content h3 {
-            margin-bottom: 15px;
-            /* Jarak antara judul dan konten */
-        }
-
-        .modal-content input,
-        .modal-content select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            /* Jarak antara input */
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            /* Pastikan padding tidak menambah lebar */
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-            /* Jarak antara tombol */
-        }
-
-        .modal-buttons .btn {
-            flex: 1;
-            /* Tombol mengambil ruang yang sama */
-            margin: 0 5px;
-            /* Jarak antar tombol */
-            transform: translateY(0);
-        }
-
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            background-image: url('assets/background.jpeg');
-            background-size: cover;
-            background-position: center;
-            height: full;
-        }
-
-        main {
-            flex: 1;
-        }
-
-        .navbar {
-            width: 100%;
-            margin: 0;
-            padding: 2vh 1vw;
-            background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-        }
-
-        .navbar .container-fluid {
-            max-width: 100%;
-            padding: 0;
-        }
-
-        .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .navbar-nav {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .navbar-nav .nav-item {
-            list-style: none;
-            padding: 0 0.5vw;
-        }
-
-        .navbar-nav .nav-item .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
-        }
-
-        .navbar-nav .nav-item1 .nav-link {
-            color: white;
-            padding: 15px 20px;
-            display: block;
-            text-align: center;
-        }
-
-        .navbar-nav .nav-item1 .nav-link:hover {
-            color: #000;
-            background: radial-gradient(circle, #ffff00, #E1AD15);
-            border-radius: 50px;
-        }
-
-        .navbar-nav .nav-item .nav-link:hover {
-            color: #000;
-            background: radial-gradient(circle, #ffff00, #E1AD15);
-            border-radius: 50px;
-        }
-
-        .dropdown-menu {
-            left: 0;
-            right: auto;
-        }
-
-        .dropdown-submenu {
-            position: relative;
-        }
-
-        .dropdown-submenu .dropdown-menu {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
-        }
-
-        .dropdown-submenu:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-item {
-            color: #333;
-            padding: 10px 20px;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .center-content {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 3vh;
-            height: 30vh;
-            text-align: center;
-            transform: translateY(10%);
-        }
-
-        .sphere {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ffff00, #E1AD15);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 1;
-            transform: translateY(-25%);
-        }
-
-        .sphere-small {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ffff00, #E1AD15);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 1;
-        }
-
-        .text-behind {
-            position: absolute;
-            font-size: 5vw;
-            color: #fff;
-            margin: 3vh;
-            font-weight: bold;
-            z-index: 0;
-            white-space: nowrap;
-        }
-
-        .title {
-            text-align: center;
-            font-size: 1.5vw;
-            font-weight: bold;
-            white-space: nowrap;
-            padding: 1vw 0;
-        }
-
-        .text-behind:first-child {
-            transform: translateY(-50%);
-        }
-
-        .text-behind:last-child {
-            transform: translateY(50%);
-        }
-
-        .title {
-            text-align: center;
-            font-size: 1.5vw;
-            font-weight: bold;
-            white-space: nowrap;
-            padding: 1vw 0;
-        }
-
-        .navbar-toggler-icon {
-            filter: invert(100%);
-            /* Change to white */
-        }
-
-        select,
-        input {
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        th, td, tr {
+            color:#f8f9fa !important;
         }
 
         .navbar-logo {
@@ -462,7 +265,6 @@ $resultLaporan = $conn->query($sqlLaporan);
         }
     </style>
 </head>
-
 <body>
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
@@ -508,84 +310,113 @@ $resultLaporan = $conn->query($sqlLaporan);
                         <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
                     </ul>
                 </li>
-                <li class="nav-item1"><a class="nav-link" href="loginPage.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li class="nav-item1"><a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
     </div>
-</nav>
-    <div class="container-transparent">
-        <div class="center-content">
-            <div class="text-behind">Laporan</div>
-            <div class="text-behind">Stok</div>
-            <div class="sphere"></div>
+</nav> 
+
+      <div class="container mt-4">
+    <!-- Judul -->
+    <div class="center-content">
+        <div class="text-behind">Absensi</div>
+        <div class="text-behind">Karyawan</div>
+        <div class="sphere"></div>
+    </div>
+
+    <!-- Form Input Bersampingan -->
+    <div class="d-flex align-items-center mb-3">
+        <!-- Dropdown Filter Tanggal -->
+        <div class="me-3 flex-grow-1">
+            <label for="tanggal" class="form-label">Filter Tanggal:</label>
+            <input type="date" id="tanggal" class="form-control">
         </div>
 
-        <div class="filter-section">
-            <form method="POST" action="">
-                <div class="input-group justify-content-center mb-5">
-                    <!-- Dropdown Bulan -->
-                    <select name="pilih_bulan" required>
-                        <option value="Semua" <?= $bulanLaporan == 'Semua' ? 'selected' : '' ?>>Semua Bulan</option>
-                        <?php
-                        // Menampilkan semua bulan, meskipun tidak ada data transaksi
-                        for ($i = 1; $i <= 12; $i++) {
-                            $bulan = str_pad($i, 2, '0', STR_PAD_LEFT);
-                            $selected = $bulan == $bulanLaporan ? 'selected' : '';
-                            $bulanLabel = $namaBulan[$bulan];
-                            echo "<option value='$bulan' $selected>$bulanLabel</option>";
-                        }
-                        ?>
-                    </select>
-
-                    <!-- Dropdown Tahun -->
-                    <select name="pilih_tahun" required>
-                        <?php foreach ($years as $year): ?>
-                        <option value="<?= $year ?>" <?= $year == $tahunLaporan ? 'selected' : '' ?>>
-                            <?= $year ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="mb-3 text-center">
-                    <input type="text" name="search" placeholder="Cari kode barang atau jumlah"
-                        value="<?= htmlspecialchars($searchQuery) ?>">
-                </div>
-
-
-                <div class="text-center">
-                    <button type="submit" class="submit-btn btn btn-primary">Tampilkan Laporan</button>
-                </div>
-            </form>
+        <!-- Input Search Nama Karyawan -->
+        <div class="flex-grow-1">
+            <label for="nama" class="form-label">Cari Nama Karyawan:</label>
+            <input type="text" id="nama" class="form-control" placeholder="Nama Karyawan">
         </div>
     </div>
 
-    <div class="container">
-        <?php if ($resultLaporan->num_rows > 0): ?>
-        <h3 class="text-white">Laporan Stok <?= $namaBulan[$bulanLaporan] . ' ' . $tahunLaporan ?></h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Kode Barang</th>
-                    <th>Tanggal</th>
-                    <th>Jumlah</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $resultLaporan->fetch_assoc()): ?>
-                <tr>
-                    <td><?= $row['kode_barang'] ?></td>
-                    <td><?= date('d-m-Y', strtotime($row['tanggal_in_out'])) ?></td>
-                    <td><?= abs($row['quantity']) ?></td>
-                    <td><?= $row['status_in_out'] ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-        <?php else: ?>
-        <p>Tidak ada barang masuk/keluar untuk bulan <?= $namaBulan[$bulanLaporan] ?> <?= $tahunLaporan ?>.</p>
-        <?php endif; ?>
+    <!-- Tombol Filter -->
+    <div class="container text-center mb-4">
+        <button onclick="filterAbsensi()" class="btn mt-2 mb-5">Tampilkan</button>
     </div>
+
+    <div class="container-glass">
+    <!-- Tabel Absensi -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Kode Karyawan</th>
+                <th>Nama Karyawan</th>
+                <th>Jam</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="data-absensi">
+            <tr>
+                <td colspan="4">Tidak ada data.</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+
+    <script>
+        // Function to fetch and display all attendance data on page load
+        window.onload = function() {
+            // Call the function to fetch all data
+            filterAbsensi();
+        };
+
+        // Fungsi untuk menampilkan data absensi
+        function filterAbsensi() {
+            const tanggal = document.getElementById('tanggal').value;
+            const nama = document.getElementById('nama').value;
+
+            // Debugging: log URL yang dikirimkan
+            console.log(`Fetching data from: MelihatAbsensi.php?tanggal=${tanggal}&nama=${nama}`);
+
+            // Panggil API MelihatAbsensi.php
+            let url = `MelihatAbsensi.php?tanggal=${tanggal}&nama=${nama}`;
+            if (!tanggal) {
+                url = url.replace("&tanggal=", "");
+            }
+            if (!nama) {
+                url = url.replace("&nama=", "");
+            }
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Cache-Control': 'no-cache',  // Memastikan cache tidak digunakan
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('data-absensi');
+                tbody.innerHTML = '';
+
+                if (data.length > 0) {
+                    data.forEach(row => {
+                        const status = row.status === 1 ? 'Hadir' : 'Tidak Hadir';
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.kode_karyawan}</td>
+                            <td>${row.nama}</td>
+                            <td>${row.jam}</td>
+                            <td>${status}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4">Tidak ada data.</td></tr>';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
-
 </html>

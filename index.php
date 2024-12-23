@@ -18,7 +18,6 @@
           background-image: url('assets/background.jpeg');
           background-size: cover;
           background-position:center;
-          height:full;
         }
 
         main {
@@ -115,7 +114,6 @@
           align-items: center;
           height: 100vh;
           text-align: center;
-          transform: translateY(10%);
         }
 
         .sphere {

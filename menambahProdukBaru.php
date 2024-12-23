@@ -324,6 +324,7 @@ $resultProduk = $conn->query($sqlProduk);
     .modal-buttons .btn {
         flex: 1; /* Tombol mengambil ruang yang sama */
         margin: 0 5px; /* Jarak antar tombol */
+        color: black;
         transform: translateY(0);
     }
     html, body {
@@ -542,7 +543,7 @@ $resultProduk = $conn->query($sqlProduk);
                         <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
                     </ul>
                 </li>
-                <li class="nav-item1"><a class="nav-link" href="loginPage.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li class="nav-item1"><a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
     </div>

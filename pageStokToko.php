@@ -335,7 +335,7 @@ $result = $conn->query($query);
                         <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
                     </ul>
                 </li>
-                <li class="nav-item1"><a class="nav-link" href="loginPage.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li class="nav-item1"><a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
     </div>
@@ -417,13 +417,13 @@ $result = $conn->query($query);
                 <div class="modal-body">
                     <input type="hidden" id="id_detprod_add" name="id_detprod">
                     <div class="mb-3">
-                        <label for="jumlah_add" class="form-label">Jumlah Stok</label>
+                        <label style="color: black !important" for="jumlah_add" class="form-label">Jumlah Stok</label>
                         <input type="number" class="form-control" id="jumlah_add" name="jumlah" min="1" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" name="action" value="add" class="btn btn-primary">Tambah Stok</button>
+                    <button style="color: black" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button style="color: black" type="submit" name="action" value="add" class="btn btn-primary">Tambah Stok</button>
                 </div>
             </form>
         </div>
@@ -442,13 +442,13 @@ $result = $conn->query($query);
                 <div class="modal-body">
                     <input type="hidden" id="id_detprod_sub" name="id_detprod">
                     <div class="mb-3">
-                        <label for="jumlah_sub" class="form-label">Jumlah Stok</label>
-                        <input type="number" class="form-control" id="jumlah_sub" name="jumlah" min="1" required>
+                    <label for="jumlah_sub" class="form-label" style="color: black !important;">Jumlah Stok</label>
+                    <input type="number" class="form-control" id="jumlah_sub" name="jumlah" min="1" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" name="action" value="subtract" class="btn btn-danger">Kurangi Stok</button>
+                    <button style="color: black" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button style="color: black" type="submit" name="action" value="subtract" class="btn btn-danger">Kurangi Stok</button>
                 </div>
             </form>
         </div>

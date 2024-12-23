@@ -1,7 +1,20 @@
 <?php
+
+session_set_cookie_params(0);
+
+session_start(); // Start the session
+
+// Check if the session variable 'role' exists and if it's one of the allowed roles
+if (!isset($_SESSION['jabatan']) || $_SESSION['jabatan'] !== 'pemilik') {
+    // Redirect to login page if not logged in or pemilik
+    header('Location: loginPage.php');
+    exit();
+}
 // Include koneksi database dan kelas Karyawan
 include 'koneksi.php';
 include 'Karyawan.php';
+
+
 
 // Variabel untuk menyimpan alert jika ada
 $alert = isset($_GET['alert']) ? $_GET['alert'] : '';
@@ -331,7 +344,7 @@ if ($search) {
                         <li><a class="dropdown-item" href="membuatLaporanStok.php">Stok Gudang</a></li>
                     </ul>
                 </li>
-                <li class="nav-item1"><a class="nav-link" href="loginPage.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li class="nav-item1"><a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
     </div>
